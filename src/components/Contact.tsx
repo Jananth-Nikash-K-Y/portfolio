@@ -63,20 +63,20 @@ const Contact: React.FC = () => {
     { 
       icon: <Mail size={24} className="text-purple-500" />,
       title: 'Email',
-      value: 'alex.chen@example.com',
-      link: 'mailto:alex.chen@example.com'
+      value: 'jananthnikash.ky@outlook.in',
+      link: 'mailto:jananthnikash.ky@outlook.in'
     },
     { 
       icon: <Phone size={24} className="text-blue-500" />,
       title: 'Phone',
-      value: '+1 (555) 123-4567',
-      link: 'tel:+15551234567'
+      value: '+91 8220322495',
+      link: 'tel:+918220322495'
     },
     { 
       icon: <MapPin size={24} className="text-emerald-500" />,
       title: 'Location',
-      value: 'San Francisco, CA, USA',
-      link: 'https://maps.google.com/?q=San+Francisco,+CA'
+      value: 'Pernambut, Vellore',
+      link: 'https://www.google.com/maps/place/Pernambut'
     }
   ];
 
@@ -237,8 +237,8 @@ const Contact: React.FC = () => {
               <div className="mt-10">
                 <h4 className="text-lg font-medium mb-4">Follow Me</h4>
                 <div className="flex space-x-3">
-                  <SocialIcon name="GitHub" link="https://github.com" />
-                  <SocialIcon name="LinkedIn" link="https://linkedin.com" />
+                  <SocialIcon name="GitHub" link="https://github.com/Jananth-Nikash-K-Y/" />
+                  <SocialIcon name="LinkedIn" link="https://in.linkedin.com/in/jananth-nikash-k-y" />
                   <SocialIcon name="Twitter" link="https://twitter.com" />
                   <SocialIcon name="Instagram" link="https://instagram.com" />
                 </div>

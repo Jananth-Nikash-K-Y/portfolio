@@ -32,9 +32,10 @@ const Hero: React.FC = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center pt-16"
     >
+      {/* Hero Content */}
       <div
         ref={textRef}
-        className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center opacity-0 transform translate-y-10 transition-all duration-1000"
+        className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center opacity-0"
       >
         <div className="inline-block mb-4 px-6 py-2 border border-purple-500 rounded-full text-purple-500 text-sm font-medium tracking-wide">
           FULL STACK & AI ENGINEER
@@ -63,11 +64,12 @@ const Hero: React.FC = () => {
             Contact Me
           </a>
         </div>
+      </div>
 
-        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
-          <span className="text-sm text-gray-500 mb-2">Scroll Down</span>
-          <ArrowDown size={20} className="text-purple-500" />
-        </div>
+      {/* Scroll Down Indicator */}
+      <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
+        <span className="text-sm text-gray-500 mb-2">Scroll Down</span>
+        <ArrowDown size={20} className="text-purple-500" />
       </div>
 
       {/* Tech floating elements */}

@@ -29,10 +29,10 @@ const About: React.FC = () => {
   }, []);
 
   const stats = [
-    { icon: <BrainCircuit size={24} />, value: '15+', label: 'AI Projects' },
-    { icon: <Code size={24} />, value: '8+', label: 'Years Experience' },
-    { icon: <Terminal size={24} />, value: '50+', label: 'Applications Built' },
-    { icon: <Database size={24} />, value: '30+', label: 'Databases Managed' },
+    { icon: <Code size={24} />, value: '3+', label: 'Years Experience' },
+    { icon: <BrainCircuit size={24} />, value: '5+', label: 'AI Projects' },
+    { icon: <Terminal size={24} />, value: '20+', label: 'Applications Built' },
+    { icon: <Database size={24} />, value: '10+', label: 'Databases Managed' },
   ];
 
   return (

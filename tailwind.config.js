@@ -7,6 +7,9 @@ export default {
       animation: {
         'spin-slow': 'spin 20s linear infinite',
       },
+      perspective: {
+        '1000': '1000px', // Adding perspective class
+      }
     },
   },
   plugins: [],
