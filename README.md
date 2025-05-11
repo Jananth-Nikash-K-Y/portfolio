@@ -47,4 +47,4 @@ A modern, interactive portfolio website to showcase projects, skills, and profes
 Feel free to reach out via the contact form on the site or connect on [LinkedIn](https://in.linkedin.com/in/jananth-nikash-k-y).
 
 ---
-© 2024 Jananth Nikash. All rights reserved.
+© 2025 Jananth Nikash. All rights reserved.
