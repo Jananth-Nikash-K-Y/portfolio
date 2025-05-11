@@ -1,67 +1,165 @@
-import React, { useEffect, useRef } from 'react';
+import { PerspectiveCamera, Scene, Vector3, Group } from "three";
+import { useEffect, useRef } from "react";
+import { TrackballControls } from "three/examples/jsm/controls/TrackballControls";
+import {
+  CSS2DRenderer,
+  CSS2DObject,
+} from "three/examples/jsm/renderers/CSS2DRenderer";
+import SectionTitle from "./shared/SectionTitle";
 
 const skills = [
-  { src: '/assets/python.png', alt: 'Python' },
-  { src: '/assets/react.png', alt: 'React' },
-  { src: '/assets/nodejs.png', alt: 'Node.js' },
-  { src: '/assets/tensorflow.png', alt: 'TensorFlow' },
-  { src: '/assets/aws.png', alt: 'AWS' },
-  { src: '/assets/mongodb.png', alt: 'MongoDB' },
-  { src: '/assets/pytorch.png', alt: 'PyTorch' }
+  { name: "Angular", slug: "angular" },
+  { name: "Apache ECharts", slug: "apacheecharts" },
+  { name: "Apache Kafka", slug: "apachekafka" },
+  { name: "Dart", slug: "dart" },
+  { name: "FastAPI", slug: "fastapi" },
+  { name: "Firebase", slug: "firebase" },
+  { name: "Flask", slug: "flask" },
+  { name: "Flutter", slug: "flutter" },
+  { name: "Git", slug: "git" },
+  { name: "GitHub", slug: "github" },
+  { name: "JavaScript", slug: "javascript" },
+  { name: "JSON", slug: "json" },
+  { name: "Kafka", slug: "apachekafka" },
+  { name: "Meta", slug: "meta" },
+  { name: "ML Flow", slug: "mlflow" },
+  { name: "MongoDB", slug: "mongodb" },
+  { name: "MySQL", slug: "mysql" },
+  { name: "Netlify", slug: "netlify" },
+  { name: "Node.js", slug: "nodedotjs" },
+  { name: "npm", slug: "npm" },
+  { name: "Numpy", slug: "numpy" },
+  { name: "Obsidian", slug: "obsidian" },
+  { name: "Open API", slug: "openai" },
+  { name: "Pandas", slug: "pandas" },
+  { name: "PostgreSQL", slug: "postgresql" },
+  { name: "Prettier", slug: "prettier" },
+  { name: "Python", slug: "python" },
+  { name: "React", slug: "react" },
+  { name: "Replicator", slug: "nvidia" },
+  { name: "scikit-learn", slug: "scikitlearn" },
+  { name: "Tailwind CSS", slug: "tailwindcss" },
+  { name: "TensorFlow", slug: "tensorflow" },
+  { name: "Three.js", slug: "threedotjs" },
+  { name: "TypeScript", slug: "typescript" },
+  { name: "Vercel", slug: "vercel" },
+  { name: "Vite", slug: "vite" },
+  { name: "Wordpress", slug: "wordpress" },
+  { name: "YOLO", slug: "yolo" },
 ];
 
-const Skills: React.FC = () => {
-  const ringRef = useRef<HTMLDivElement>(null);
+const SkillSphere = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const groupRef = useRef<Group>();
+  const controlsRef = useRef<TrackballControls>();
+  const requestRef = useRef<number>();
 
   useEffect(() => {
-    const rotate = () => {
-      if (ringRef.current) {
-        ringRef.current.style.transform = `rotateY(${(parseFloat(ringRef.current.style.transform.replace('rotateY(', '').replace('deg)', '')) || 0) + 0.2}deg)`;
+    const container = containerRef.current!;
+    const width = container.offsetWidth;
+    const height = container.offsetHeight;
+
+    const camera = new PerspectiveCamera(35, width / height, 0.1, 3500);
+    camera.position.z = 2000;
+
+    const scene = new Scene();
+    const renderer = new CSS2DRenderer();
+    renderer.setSize(width, height);
+    container.appendChild(renderer.domElement);
+
+    const group = new Group();
+    groupRef.current = group;
+    scene.add(group);
+
+    const vector = new Vector3();
+    const objects: CSS2DObject[] = [];
+
+    skills.forEach((skill, i) => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "iconWrapper";
+
+      const img = document.createElement("img");
+      img.src = `https://unpkg.com/simple-icons@9.1.0/icons/${skill.slug}.svg`;
+      img.alt = skill.name;
+      img.style.width = "40px";
+      img.style.filter =
+        "invert(64%) sepia(6%) saturate(1740%) hue-rotate(185deg) brightness(87%) contrast(83%)";
+      img.draggable = false;
+
+      const label = document.createElement("p");
+      label.textContent = skill.name;
+      label.className = "label";
+
+      wrapper.appendChild(img);
+      wrapper.appendChild(label);
+
+      const obj = new CSS2DObject(wrapper);
+      const phi = Math.acos(-1 + (2 * i) / skills.length);
+      const theta = Math.sqrt(skills.length * Math.PI) * phi;
+      obj.position.setFromSphericalCoords(630, phi, theta);
+      vector.copy(obj.position).multiplyScalar(2);
+
+      objects.forEach((obj) => {
+        const scale = 1 - obj.position.z / 1000;
+        obj.element.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        obj.element.style.opacity = `${scale}`;
+      });
+      group.add(obj);
+    });
+
+    const controls = new TrackballControls(camera, renderer.domElement);
+    controls.rotateSpeed = 2;
+    controls.noPan = true;
+    controls.noZoom = true;
+    controlsRef.current = controls;
+
+    let hasInteraction = false;
+    let interactionTimer: NodeJS.Timeout;
+
+    renderer.domElement.addEventListener("pointerdown", () => {
+      hasInteraction = true;
+      clearTimeout(interactionTimer);
+    });
+    renderer.domElement.addEventListener("pointerup", () => {
+      interactionTimer = setTimeout(() => (hasInteraction = false), 2000);
+    });
+
+    const animate = () => {
+      if (group) {
+        group.rotation.y += hasInteraction ? 0.001 : 0.004;
+        group.rotation.x += hasInteraction ? 0.001 : 0.004;
       }
-      requestAnimationFrame(rotate);
+      controls.update();
+      renderer.render(scene, camera);
+      requestRef.current = requestAnimationFrame(animate);
     };
-    rotate();
+    animate();
+
+    const resize = () => {
+      camera.aspect = container.offsetWidth / container.offsetHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.offsetWidth, container.offsetHeight);
+      controls.handleResize();
+    };
+
+    window.addEventListener("resize", resize);
+
+    return () => {
+      cancelAnimationFrame(requestRef.current!);
+      window.removeEventListener("resize", resize);
+      container.removeChild(renderer.domElement);
+    };
   }, []);
 
   return (
-    <section id="skills" className="py-20 bg-gray-900/50 dark:bg-gray-100/50 overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold mb-10 text-white dark:text-black">Skills & Expertise</h2>
-
-        <div className="w-full h-[400px] flex justify-center items-center perspective-[1000px]">
-          <div
-            ref={ringRef}
-            className="relative w-[300px] h-[300px] transform-style-preserve-3d transition-all duration-1000"
-            style={{
-              transformStyle: 'preserve-3d',
-              animation: 'rotate 30s linear infinite'
-            }}
-          >
-            {skills.map((skill, i) => {
-              const total = skills.length;
-              const angle = (360 / total) * i; // Evenly distribute icons in 3D space
-              return (
-                <div
-                  key={skill.alt}
-                  className="absolute w-16 h-16 md:w-20 md:h-20 transform-style-preserve-3d"
-                  style={{
-                    transform: `rotateY(${angle}deg) translateZ(150px)`,
-                    transition: 'transform 1s'
-                  }}
-                >
-                  <img
-                    src={skill.src}
-                    alt={skill.alt}
-                    className="w-full h-full object-contain rounded-full bg-transparent"
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+    <section id="skills" className="py-10 text-white text-center">
+      <SectionTitle>Skills & Expertise</SectionTitle>
+      <div
+        ref={containerRef} style={{ marginTop: '4.5rem' }}
+        className="mx-auto w-[80vmin] h-[80vmin] max-w-[576px] max-h-[576px] relative"
+      ></div>
     </section>
   );
 };
 
-export default Skills;
+export default SkillSphere;

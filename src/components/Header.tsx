@@ -1,37 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Moon, Sun, Github, Linkedin, Twitter } from 'lucide-react';
+import { Menu, X, Github, Linkedin, Twitter } from 'lucide-react';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 10);
     };
-
-    // Set initial theme
-    document.documentElement.classList.toggle('dark', darkMode);
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', darkMode);
-  }, [darkMode]);
-
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
   };
 
   const navLinks = [
@@ -44,9 +28,9 @@ const Header: React.FC = () => {
   ];
 
   const socialLinks = [
-    { name: 'GitHub', icon: <Github size={18} />, href: 'https://github.com' },
-    { name: 'LinkedIn', icon: <Linkedin size={18} />, href: 'https://linkedin.com' },
-    { name: 'Twitter', icon: <Twitter size={18} />, href: 'https://twitter.com' },
+    { name: 'GitHub', icon: <Github size={18} />, href: 'https://github.com/Jananth-Nikash-K-Y/' },
+    { name: 'LinkedIn', icon: <Linkedin size={18} />, href: 'https://in.linkedin.com/in/jananth-nikash-k-y' },
+    { name: 'Twitter', icon: <Twitter size={18} />, href: 'https://x.com/JananthNikashKY' },
   ];
 
   return (
@@ -98,13 +82,6 @@ const Header: React.FC = () => {
                 {link.icon}
               </a>
             ))}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors text-gray-100 dark:text-gray-900"
-              aria-label="Toggle dark mode"
-            >
-              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
           </div>
 
           <div className="md:hidden flex items-center">
@@ -119,7 +96,6 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-gray-900/95 dark:bg-gray-100/95 backdrop-blur-md">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
@@ -148,13 +124,6 @@ const Header: React.FC = () => {
                   {link.icon}
                 </a>
               ))}
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-full hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors text-gray-100 dark:text-gray-900"
-                aria-label="Toggle dark mode"
-              >
-                {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-              </button>
             </div>
           </div>
         </div>

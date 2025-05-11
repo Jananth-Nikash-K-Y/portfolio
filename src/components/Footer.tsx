@@ -28,16 +28,15 @@ const Footer: React.FC = () => {
                 JK
               </div>
             </div>
-            <span className="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
+            {/* <span className="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
               Jananth Nikash K Y
-            </span>
+            </span> */}
           </a>
           
-          <div className="flex space-x-5 mb-8">
+          {/* <div className="flex space-x-5 mb-8">
             <SocialLink href="https://github.com/Jananth-Nikash-K-Y/" icon={<Github size={20} />} label="GitHub" />
             <SocialLink href="https://in.linkedin.com/in/jananth-nikash-k-y" icon={<Linkedin size={20} />} label="LinkedIn" />
-            <SocialLink href="https://twitter.com" icon={<Twitter size={20} />} label="Twitter" />
-            <SocialLink href="https://instagram.com" icon={<Instagram size={20} />} label="Instagram" />
+            <SocialLink href="https://x.com/JananthNikashKY" icon={<Twitter size={20} />} label="Twitter" />
           </div>
           
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-8 text-sm text-gray-400">
@@ -47,11 +46,11 @@ const Footer: React.FC = () => {
             <a href="#projects" className="hover:text-purple-400 transition-colors">Projects</a>
             <a href="#experience" className="hover:text-purple-400 transition-colors">Experience</a>
             <a href="#contact" className="hover:text-purple-400 transition-colors">Contact</a>
-          </div>
+          </div> */}
           
           <div className="text-center text-gray-500 text-sm">
             <p>© {new Date().getFullYear()} Jananth Nikash. All rights reserved.</p>
-            <p className="mt-1">AI Engineer & Full-Stack Developer</p>
+            {/* <p className="mt-1">AI Engineer & Full-Stack Developer</p> */}
           </div>
         </div>
       </div>

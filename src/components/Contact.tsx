@@ -239,8 +239,8 @@ const Contact: React.FC = () => {
                 <div className="flex space-x-3">
                   <SocialIcon name="GitHub" link="https://github.com/Jananth-Nikash-K-Y/" />
                   <SocialIcon name="LinkedIn" link="https://in.linkedin.com/in/jananth-nikash-k-y" />
-                  <SocialIcon name="Twitter" link="https://twitter.com" />
-                  <SocialIcon name="Instagram" link="https://instagram.com" />
+                  <SocialIcon name="Twitter" link="https://x.com/JananthNikashKY" />
+                  {/* <SocialIcon name="Instagram" link="https://instagram.com" /> */}
                 </div>
               </div>
             </div>
