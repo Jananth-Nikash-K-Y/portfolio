@@ -212,7 +212,6 @@ const Contact: React.FC = () => {
           <div className="lg:col-span-2">
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 h-full">
               <h3 className="text-2xl font-semibold mb-6">Contact Information</h3>
-              
               <div className="space-y-6 mb-8">
                 {contactInfo.map((info, index) => (
                   <div key={index} className="flex items-start gap-4">
@@ -236,7 +235,7 @@ const Contact: React.FC = () => {
               
               <div className="mt-10">
                 <h4 className="text-lg font-medium mb-4">Follow Me</h4>
-                <div className="flex space-x-3">
+                <div className="flex space-x-3 mb-6 w-full">
                   <SocialIcon name="GitHub" link="https://github.com/Jananth-Nikash-K-Y/" />
                   <SocialIcon name="LinkedIn" link="https://in.linkedin.com/in/jananth-nikash-k-y" />
                   <SocialIcon name="Twitter" link="https://x.com/JananthNikashKY" />

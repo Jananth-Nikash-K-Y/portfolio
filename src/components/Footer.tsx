@@ -50,7 +50,6 @@ const Footer: React.FC = () => {
           
           <div className="text-center text-gray-500 text-sm">
             <p>© {new Date().getFullYear()} Jananth Nikash. All rights reserved.</p>
-            {/* <p className="mt-1">AI Engineer & Full-Stack Developer</p> */}
           </div>
         </div>
       </div>
