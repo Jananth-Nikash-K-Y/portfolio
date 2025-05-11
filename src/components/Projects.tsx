@@ -36,6 +36,7 @@ const Projects: React.FC = () => {
     { id: 'frontend', name: 'Frontend' },
     { id: 'backend', name: 'Backend' },
     { id: 'fullstack', name: 'Full Stack' },
+    { id: 'personal', name: 'Personal'}
   ];
 
   const filteredProjects = category === 'all'

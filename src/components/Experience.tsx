@@ -55,7 +55,7 @@ const Experience: React.FC = () => {
         
         <div className="mt-16 text-center">
           <a
-            href="/resume.pdf"
+            href="assets/Jananth Nikash K Y.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-md border border-purple-500 text-purple-500 font-medium hover:bg-purple-500/10 transition-all"

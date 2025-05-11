@@ -57,15 +57,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         </div>
         
         <div className="flex justify-between items-center mt-4">
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-1"
-          >
-            View Project
-            <ExternalLink size={14} />
-          </a>
+          {project.liveUrl ? (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-1"
+            >
+              View Project
+              <ExternalLink size={14} />
+            </a>
+          ) : (
+            <span className="text-sm font-medium text-gray-500">Project Demo Not Available</span>
+          )}
           
           {project.githubUrl && (
             <a

@@ -6,7 +6,7 @@ export interface Project {
   category: string;
   categoryName: string;
   technologies: string[];
-  liveUrl: string;
+  liveUrl?: string;
   githubUrl?: string;
 }
 

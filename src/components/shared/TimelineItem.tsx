@@ -13,7 +13,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ experience, index }) => {
   return (
     <div className={`flex flex-col md:flex-row items-center mb-12 ${isEven ? 'md:flex-row-reverse' : ''}`}>
       {/* Left column (or right on mobile) */}
-      <div className={`w-full md:w-1/2 mb-6 md:mb-0 ${isEven ? 'md:pl-12' : 'md:pr-12'} ${isEven ? 'md:text-left' : 'md:text-right'}`}>
+      <div className={`w-full md:w-1/2 mb-6 md:mb-0 flex ${isEven ? 'justify-start md:pr-12' : 'justify-end md:pl-12'}`}>
         <div
           className={`p-6 rounded-lg bg-gray-800 hover:bg-gray-800/80 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/10`}
         >
