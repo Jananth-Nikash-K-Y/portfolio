@@ -48,17 +48,17 @@ const Projects: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionTitle>Featured Projects</SectionTitle>
         
-        <div className="flex justify-center mt-8 mb-12 overflow-x-auto pb-2">
-          <div className="flex space-x-2">
+        <div className="mt-8 mb-10 w-full overflow-x-auto text-center">
+          <div className="inline-flex flex-nowrap gap-3 px-4 py-2 mx-auto">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setCategory(cat.id)}
-                className={`px-4 py-2 rounded-full text-sm transition-all ${
-                  category === cat.id
-                    ? 'bg-purple-600 text-white font-medium'
-                    : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-gray-200'
-                }`}
+                className={`min-w-[120px] w-32 px-2 py-2 rounded-full font-medium whitespace-nowrap transition
+                  ${category === cat.id
+                    ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-md'
+                    : 'bg-[#23283b] text-gray-300'}
+                  focus:outline-none focus:ring-2 focus:ring-purple-400`}
               >
                 {cat.name}
               </button>
