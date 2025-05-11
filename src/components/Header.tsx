@@ -45,15 +45,12 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <a href="#home" className="flex items-center gap-2">
-              <div className="relative w-10 h-10">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-blue-500 animate-pulse"></div>
-                <div className="absolute inset-1 rounded-full bg-gray-900 dark:bg-gray-100 flex items-center justify-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
-                  JK
-                </div>
+              <div className="w-18 h-18 rounded-full flex items-center justify-center overflow-hidden">
+                <img src="/assets/logo/logoV2.png" alt="Logo" className="w-16 h-16 object-contain filter drop-shadow-[0_1px_4px_rgba(80,0,200,0.25)]" />
               </div>
-              <span className="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
+              {/* <span className="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
                 Jananth Nikash
-              </span>
+              </span> */}
             </a>
           </div>
 

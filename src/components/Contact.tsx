@@ -69,14 +69,14 @@ const Contact: React.FC = () => {
     { 
       icon: <Phone size={24} className="text-blue-500" />,
       title: 'Phone',
-      value: '+91 8220322495',
-      link: 'tel:+918220322495'
+      value: '+91 82203224--',
+      link: 'tel:+9182203224--'
     },
     { 
       icon: <MapPin size={24} className="text-emerald-500" />,
       title: 'Location',
-      value: 'Pernambut, Vellore',
-      link: 'https://www.google.com/maps/place/Pernambut'
+      value: 'Vellore, TN',
+      link: 'https://www.google.com/maps/place/Vellore'
     }
   ];
 
@@ -225,7 +225,7 @@ const Contact: React.FC = () => {
                         href={info.link} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-lg text-gray-100 hover:text-purple-400 transition-colors"
+                        className="text-lg text-gray-100 hover:text-purple-400 transition-colors break-all"
                       >
                         {info.value}
                       </a>

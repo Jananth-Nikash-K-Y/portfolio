@@ -23,9 +23,9 @@ const Footer: React.FC = () => {
           
           <a href="#home" className="flex items-center gap-2 mb-6">
             <div className="relative w-10 h-10">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-blue-500"></div>
-              <div className="absolute inset-1 rounded-full bg-gray-900 flex items-center justify-center font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
-                JK
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-blue-500 animate-pulse"></div>
+              <div className="absolute inset-1 rounded-full bg-gray-900 flex items-center justify-center overflow-hidden">
+                <img src="/assets/logo/logoV2.png" alt="Logo" className="w-8 h-8 object-contain" />
               </div>
             </div>
             {/* <span className="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">

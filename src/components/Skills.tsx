@@ -155,8 +155,9 @@ const SkillSphere = () => {
     <section id="skills" className="py-10 text-white text-center">
       <SectionTitle>Skills & Expertise</SectionTitle>
       <div
-        ref={containerRef} style={{ marginTop: '4.5rem' }}
-        className="mx-auto w-[80vmin] h-[80vmin] max-w-[576px] max-h-[576px] relative"
+        ref={containerRef}
+        style={{ marginTop: '4.5rem' }}
+        className="mx-auto w-[90vw] h-[90vw] min-w-[220px] min-h-[220px] sm:w-[70vmin] sm:h-[70vmin] md:w-[60vmin] md:h-[60vmin] lg:w-[576px] lg:h-[576px] max-w-full max-h-[576px] relative"
       ></div>
     </section>
   );
