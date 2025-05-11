@@ -108,12 +108,6 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Scroll Down Indicator */}
-      <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
-        <span className="text-sm text-gray-500 mb-2">Scroll Down</span>
-        <ArrowDown size={20} className="text-purple-500" />
-      </div>
-
       {/* Tech floating elements */}
       <div className="absolute top-1/4 left-10 w-16 h-16 rounded-full bg-purple-900/30 backdrop-blur-xl animate-float"></div>
       <div className="absolute top-2/3 right-20 w-24 h-24 rounded-full bg-blue-900/20 backdrop-blur-xl animate-float-delayed"></div>
