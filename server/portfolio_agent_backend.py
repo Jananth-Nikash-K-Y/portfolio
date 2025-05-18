@@ -1,36 +1,50 @@
 from fastapi import FastAPI, Request, Response
-from langchain_ollama import Ollama
+from langchain_community.llms import Ollama
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.vectorstores import FAISS
-from langchain_ollama import OllamaEmbeddings
+from langchain_community.embeddings import OllamaEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.docstore.document import Document
 import os
 import tempfile
 import pyttsx3
-
-# Load your portfolio data (ensure this file exists)
-PORTFOLIO_PATH = os.path.join(os.path.dirname(__file__), 'portfolio.txt')
-with open(PORTFOLIO_PATH, encoding='utf-8') as f:
-    portfolio_text = f.read()
-
-# Split and embed portfolio
-docs = [Document(page_content=chunk) for chunk in CharacterTextSplitter(chunk_size=500, chunk_overlap=50).split_text(portfolio_text)]
-embeddings = OllamaEmbeddings(model="llama2")
-vectorstore = FAISS.from_documents(docs, embeddings)
-
-# Set up LLM and chain with short-term memory (last 3 exchanges)
-llm = Ollama(model="llama2")
-memory = ConversationBufferWindowMemory(k=3, memory_key='chat_history', return_messages=True)
-qa_chain = ConversationalRetrievalChain.from_llm(
-    llm, vectorstore.as_retriever(), memory=memory,
-    return_source_documents=False
-)
+import json
+from pathlib import Path
 
 app = FastAPI()
 
-@app.post('/chat')
+# Initialize components only once when the server starts
+def init_components():
+    # Load portfolio data
+    portfolio_path = Path(__file__).parent / 'portfolio.txt'
+    with open(portfolio_path, encoding='utf-8') as f:
+        portfolio_text = f.read()
+
+    # Split and embed portfolio
+    docs = [Document(page_content=chunk) for chunk in CharacterTextSplitter(chunk_size=500, chunk_overlap=50).split_text(portfolio_text)]
+    
+    # Use environment variables for model configuration
+    embedding_model = os.getenv('EMBEDDING_MODEL', 'nomic-embed-text')
+    llm_model = os.getenv('LLM_MODEL', 'tinyllama')
+    
+    embeddings = OllamaEmbeddings(model=embedding_model)
+    vectorstore = FAISS.from_documents(docs, embeddings)
+
+    # Set up LLM and chain
+    llm = Ollama(model=llm_model)
+    memory = ConversationBufferWindowMemory(k=3, memory_key='chat_history', return_messages=True)
+    qa_chain = ConversationalRetrievalChain.from_llm(
+        llm, vectorstore.as_retriever(), memory=memory,
+        return_source_documents=False
+    )
+    
+    return qa_chain, memory
+
+# Initialize components
+qa_chain, memory = init_components()
+
+@app.post('/api/chat')
 async def chat(request: Request):
     data = await request.json()
     user_message = data['message']
@@ -41,8 +55,7 @@ async def chat(request: Request):
         answer = "I'm only able to answer questions about Jananth's portfolio. Please ask something related!"
     return {'answer': answer}
 
-# Voice endpoint: POST /voice {"text": "..."} returns audio/wav using pyttsx3
-@app.post('/voice')
+@app.post('/api/voice')
 async def voice(request: Request):
     data = await request.json()
     text = data['text']

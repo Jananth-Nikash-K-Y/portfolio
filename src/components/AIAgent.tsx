@@ -297,7 +297,8 @@ export default function AIAgent() {
   const [name, setName] = useState('');
   const [messages, setMessages] = useState<{ from: 'user' | 'agent'; text: string }[]>([]);
   const [loading, setLoading] = useState(false);
-  const [chatVisible, setChatVisible] = useState(true);
+  const [visible, setVisible] = useState(true);
+  const [initiallyChoseManual, setInitiallyChoseManual] = useState(false);
 
   useEffect(() => {
     let frame: number;
@@ -321,13 +322,36 @@ export default function AIAgent() {
   }
   function handleExploreChoice(choice: 'manual' | 'agent') {
     if (choice === 'manual') {
+      setInitiallyChoseManual(true);
       setStep(2);
-      setTimeout(() => setChatVisible(false), 3000); // Auto-close after 3s
+      setTimeout(() => {
+        setVisible(false);
+      }, 3000);
     } else {
-      setStep(3);
-      setMessages([
-        { from: 'agent', text: `Awesome, ${name}! I'm here to answer any questions about Jananth's portfolio. Ask away!` },
-      ]);
+      if (initiallyChoseManual) {
+        setMessages([{
+          from: 'agent',
+          text: "Hey there! Changed your mind? I'd be happy to be your guide through Jananth's portfolio! What would you like to know? 😊"
+        }]);
+        setStep(3);
+      } else {
+        setStep(3);
+        setMessages([]); // Start with empty messages
+      }
+    }
+  }
+
+  // Add click handler for the agent
+  function handleAgentClick() {
+    if (!visible) {
+      setVisible(true);
+      if (initiallyChoseManual) {
+        setStep(3);
+        setMessages([{
+          from: 'agent',
+          text: "Hey there! Changed your mind? I'd be happy to be your guide through Jananth's portfolio! What would you like to know? 😊"
+        }]);
+      }
     }
   }
 
@@ -338,7 +362,7 @@ export default function AIAgent() {
     setLoading(true);
     try {
       // 1. Get agent response
-      const res = await fetch('http://localhost:8000/chat', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: msg }),
@@ -346,7 +370,7 @@ export default function AIAgent() {
       const data = await res.json();
       setMessages(m => [...m, { from: 'agent', text: data.answer }]);
       // 2. Get voice audio and play
-      const voiceRes = await fetch('http://localhost:8000/voice', {
+      const voiceRes = await fetch('/api/voice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: data.answer }),
@@ -373,10 +397,16 @@ export default function AIAgent() {
           messages={messages}
           onSend={handleSend}
           loading={loading}
-          visible={chatVisible}
+          visible={visible}
         />
       )}
-      <Canvas camera={camera} gl={{ alpha: true }} style={{ background: 'transparent' }} shadows>
+      <Canvas 
+        camera={camera} 
+        gl={{ alpha: true }} 
+        style={{ background: 'transparent' }} 
+        shadows
+        onClick={handleAgentClick}
+      >
         <ambientLight intensity={0.3} />
         <directionalLight position={[2, 2, 2]} intensity={1.1} />
         <RobotModel scale={scale} progress={progress} />
