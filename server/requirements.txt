@@ -2,8 +2,10 @@ fastapi==0.104.1
 uvicorn==0.24.0
 langchain==0.0.350
 langchain-community==0.0.13
+--find-links https://github.com/kyamagu/faiss-wheels/releases/download/v1.7.4/
 faiss-cpu==1.7.4
 pyttsx3==2.90
 python-multipart==0.0.6
 pydantic==2.5.2
 wheel
+numpy>=1.19.0
