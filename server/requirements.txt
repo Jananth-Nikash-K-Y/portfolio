@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+langchain
+langchain_community
+langgraph
+ollama
+faiss-cpu
+TTS
+soundfile 
