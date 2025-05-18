@@ -14,7 +14,7 @@ function useResponsive3D() {
       const width = window.innerWidth;
       if (width < 640) {
         // Mobile
-        setSettings({ scale: 1, camera: { position: [0, 0.3, 10] as [number, number, number], fov: 40 } });
+        setSettings({ scale: 1.4, camera: { position: [0, 0.3, 10] as [number, number, number], fov: 40 } });
       } else if (width < 1024) {
         // Tablet
         setSettings({ scale: 1, camera: { position: [0, 0.3, 8] as [number, number, number], fov: 40 } });
@@ -75,13 +75,29 @@ function ChatWindow({
   name,
   onNameSubmit,
   onExploreChoice,
+  messages,
+  onSend,
+  loading,
+  visible,
 }: {
   step: number;
   name: string;
-  onNameSubmit: (name: string) => void;
+  onNameSubmit: (msg: string) => void;
   onExploreChoice: (choice: 'manual' | 'agent') => void;
+  messages: { from: 'user' | 'agent'; text: string }[];
+  onSend: (msg: string) => void;
+  loading: boolean;
+  visible: boolean;
 }) {
   const [input, setInput] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  if (!visible) return null;
+
   return (
     <div
       style={{
@@ -100,11 +116,12 @@ function ChatWindow({
         flexDirection: 'column',
         gap: 10,
         fontSize: 15,
+        minHeight: 120,
       }}
     >
       {step === 0 && (
         <>
-          <div style={{ marginBottom: 8 }}>🤖 Hi! What's your name?</div>
+          <div style={{ marginBottom: 8 }}>Hi! What's your name?</div>
           <form
             onSubmit={e => {
               e.preventDefault();
@@ -148,7 +165,7 @@ function ChatWindow({
         <>
           <div style={{ marginBottom: 8 }}>Nice to meet you, <b>{name}</b>! 👋</div>
           <div style={{ marginBottom: 8 }}>
-            Would you like to explore the portfolio manually, or with my help?
+            Would you like to explore the portfolio manually, or would you like my help to guide you through the highlights?
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
             <button
@@ -164,7 +181,7 @@ function ChatWindow({
                 cursor: 'pointer',
               }}
             >
-              Manually
+              Explore Manually
             </button>
             <button
               onClick={() => onExploreChoice('agent')}
@@ -179,7 +196,7 @@ function ChatWindow({
                 cursor: 'pointer',
               }}
             >
-              With your help
+              Guide Me
             </button>
           </div>
         </>
@@ -189,8 +206,7 @@ function ChatWindow({
           <div style={{ marginBottom: 8 }}>
             {name && (
               <>
-                {`Alright, ${name}! `}
-                {`Feel free to explore the portfolio. I'm here if you need me!`}
+                {`Alright, ${name}! Feel free to explore the portfolio on your own. If you need my help, just click the agent again!`}
               </>
             )}
           </div>
@@ -201,10 +217,73 @@ function ChatWindow({
           <div style={{ marginBottom: 8 }}>
             {name && (
               <>
-                {`Awesome, ${name}! I'll guide you through the portfolio. 🚀`}
+                {`Awesome, ${name}! I'm here to answer any questions about Jananth's portfolio. Ask away!`}
               </>
             )}
           </div>
+          <div style={{ flex: 1, overflowY: 'auto', marginBottom: 8 }}>
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                style={{
+                  margin: '6px 0',
+                  alignSelf: msg.from === 'user' ? 'flex-end' : 'flex-start',
+                  background: msg.from === 'user' ? '#23234a' : 'linear-gradient(90deg, #7c3aed, #2563eb, #10b981)',
+                  color: msg.from === 'user' ? '#fff' : '#fff',
+                  borderRadius: 12,
+                  padding: '7px 14px',
+                  maxWidth: '85%',
+                  fontWeight: msg.from === 'user' ? 500 : 600,
+                  fontSize: 15,
+                  boxShadow: msg.from === 'user' ? 'none' : '0 2px 12px #0002',
+                }}
+              >
+                {msg.text}
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              if (input.trim() && !loading) {
+                onSend(input.trim());
+                setInput('');
+              }
+            }}
+            style={{ display: 'flex', gap: 8 }}
+          >
+            <input
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              placeholder="Type your message..."
+              style={{
+                flex: 1,
+                padding: 8,
+                borderRadius: 8,
+                border: '1px solid #333',
+                background: '#181820',
+                color: '#fff',
+                outline: 'none',
+              }}
+            />
+            <button
+              type="submit"
+              style={{
+                padding: '8px 16px',
+                borderRadius: 8,
+                background: 'linear-gradient(90deg, #7c3aed, #2563eb, #10b981)',
+                color: '#fff',
+                border: 'none',
+                fontWeight: 600,
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? 0.6 : 1,
+              }}
+              disabled={loading}
+            >
+              Send
+            </button>
+          </form>
         </>
       )}
     </div>
@@ -216,6 +295,9 @@ export default function AIAgent() {
   const [progress, setProgress] = useState(0); // 0 to 1
   const [step, setStep] = useState(0); // 0: ask name, 1: ask explore, 2: manual, 3: agent
   const [name, setName] = useState('');
+  const [messages, setMessages] = useState<{ from: 'user' | 'agent'; text: string }[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [chatVisible, setChatVisible] = useState(true);
 
   useEffect(() => {
     let frame: number;
@@ -232,13 +314,52 @@ export default function AIAgent() {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  // Handlers for chat steps
+  // Step logic
   function handleNameSubmit(userName: string) {
     setName(userName);
     setStep(1);
   }
   function handleExploreChoice(choice: 'manual' | 'agent') {
-    setStep(choice === 'manual' ? 2 : 3);
+    if (choice === 'manual') {
+      setStep(2);
+      setTimeout(() => setChatVisible(false), 3000); // Auto-close after 3s
+    } else {
+      setStep(3);
+      setMessages([
+        { from: 'agent', text: `Awesome, ${name}! I'm here to answer any questions about Jananth's portfolio. Ask away!` },
+      ]);
+    }
+  }
+
+  // LLM chat only in step 3
+  async function handleSend(msg: string) {
+    if (step !== 3) return;
+    setMessages(m => [...m, { from: 'user', text: msg }]);
+    setLoading(true);
+    try {
+      // 1. Get agent response
+      const res = await fetch('http://localhost:8000/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg }),
+      });
+      const data = await res.json();
+      setMessages(m => [...m, { from: 'agent', text: data.answer }]);
+      // 2. Get voice audio and play
+      const voiceRes = await fetch('http://localhost:8000/voice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: data.answer }),
+      });
+      const audioBlob = await voiceRes.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      audio.play();
+    } catch (e) {
+      setMessages(m => [...m, { from: 'agent', text: 'Sorry, there was a problem connecting to the AI agent.' }]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -249,6 +370,10 @@ export default function AIAgent() {
           name={name}
           onNameSubmit={handleNameSubmit}
           onExploreChoice={handleExploreChoice}
+          messages={messages}
+          onSend={handleSend}
+          loading={loading}
+          visible={chatVisible}
         />
       )}
       <Canvas camera={camera} gl={{ alpha: true }} style={{ background: 'transparent' }} shadows>

@@ -1,9 +1,8 @@
 fastapi
 uvicorn
 langchain
-langchain_community
+langchain-ollama
 langgraph
-ollama
 faiss-cpu
-TTS
-soundfile 
+pyttsx3
+wheel
