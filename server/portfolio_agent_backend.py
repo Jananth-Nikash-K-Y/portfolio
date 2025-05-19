@@ -28,11 +28,13 @@ def init_components():
     embedding_model = os.getenv('EMBEDDING_MODEL', 'nomic-embed-text')
     llm_model = os.getenv('LLM_MODEL', 'tinyllama')
     
-    embeddings = OllamaEmbeddings(model=embedding_model)
+    # Configure Ollama to use the local Docker container
+    base_url = "http://ollama:11434"
+    embeddings = OllamaEmbeddings(model=embedding_model, base_url=base_url)
     vectorstore = FAISS.from_documents(docs, embeddings)
 
     # Set up LLM and chain
-    llm = Ollama(model=llm_model)
+    llm = Ollama(model=llm_model, base_url=base_url)
     memory = ConversationBufferWindowMemory(k=3, memory_key='chat_history', return_messages=True)
     qa_chain = ConversationalRetrievalChain.from_llm(
         llm, vectorstore.as_retriever(), memory=memory,
