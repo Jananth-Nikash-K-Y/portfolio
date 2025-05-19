@@ -2,12 +2,22 @@ services:
   - type: web
     name: portfolio-agent
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn server.portfolio_agent_backend:app --host 0.0.0.0 --port $PORT
+    buildCommand: |
+      pip install -r requirements.txt
+      pip install huggingface_hub[hf_xet]
+    startCommand: |
+      export PORT=8000
+      uvicorn server.portfolio_agent_backend:app --host 0.0.0.0 --port $PORT --workers 1
     envVars:
       - key: HUGGINGFACE_API_TOKEN
         sync: false
       - key: EMBEDDING_MODEL
         value: sentence-transformers/all-MiniLM-L6-v2
       - key: LLM_MODEL
-        value: TinyLlama/TinyLlama-1.1B-Chat-v1.0 
+        value: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+      - key: PORT
+        value: 8000
+    plan: standard
+    resources:
+      memory: 1GB
+      cpu: 1 

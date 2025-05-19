@@ -12,17 +12,24 @@ import tempfile
 import pyttsx3
 import json
 from pathlib import Path
+import torch
 
 # Load environment variables from .env file
 load_dotenv()
 
 # Get port from environment variable or use default
 port = int(os.getenv("PORT", 8000))
+print(f"Starting server on port {port}")
+
+# Set device to CPU to reduce memory usage
+device = "cpu"
+torch.set_num_threads(1)
 
 app = FastAPI()
 
 # Initialize components only once when the server starts
 def init_components():
+    print("Initializing components...")
     # Load portfolio data
     portfolio_path = Path(__file__).parent / 'portfolio.txt'
     with open(portfolio_path, encoding='utf-8') as f:
@@ -35,22 +42,36 @@ def init_components():
     embedding_model = os.getenv('EMBEDDING_MODEL', 'sentence-transformers/all-MiniLM-L6-v2')
     llm_model = os.getenv('LLM_MODEL', 'TinyLlama/TinyLlama-1.1B-Chat-v1.0')
     
-    # Configure Hugging Face models
-    embeddings = HuggingFaceEmbeddings(model_name=embedding_model)
+    print(f"Using embedding model: {embedding_model}")
+    print(f"Using LLM model: {llm_model}")
+    
+    # Configure Hugging Face models with memory optimizations
+    embeddings = HuggingFaceEmbeddings(
+        model_name=embedding_model,
+        model_kwargs={'device': device}
+    )
     vectorstore = FAISS.from_documents(docs, embeddings)
 
-    # Set up LLM and chain
+    # Set up LLM and chain with memory optimizations
     llm = HuggingFaceHub(
         repo_id=llm_model,
-        model_kwargs={"temperature": 0.7, "max_length": 512},
+        model_kwargs={
+            "temperature": 0.7,
+            "max_length": 512,
+            "device_map": device,
+            "torch_dtype": torch.float32
+        },
         huggingfacehub_api_token=os.getenv('HUGGINGFACE_API_TOKEN')
     )
-    memory = ConversationBufferWindowMemory(k=3, memory_key='chat_history', return_messages=True)
+    memory = ConversationBufferWindowMemory(k=2, memory_key='chat_history', return_messages=True)
     qa_chain = ConversationalRetrievalChain.from_llm(
-        llm, vectorstore.as_retriever(), memory=memory,
+        llm, 
+        vectorstore.as_retriever(search_kwargs={"k": 2}),
+        memory=memory,
         return_source_documents=False
     )
     
+    print("Components initialized successfully")
     return qa_chain, memory
 
 # Initialize components
@@ -82,4 +103,11 @@ async def voice(request: Request):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=port) 
+    print(f"Starting uvicorn server on port {port}")
+    uvicorn.run(
+        "portfolio_agent_backend:app",
+        host="0.0.0.0",
+        port=port,
+        workers=1,
+        log_level="info"
+    ) 
