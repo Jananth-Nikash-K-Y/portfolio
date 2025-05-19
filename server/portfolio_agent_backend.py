@@ -16,6 +16,9 @@ from pathlib import Path
 # Load environment variables from .env file
 load_dotenv()
 
+# Get port from environment variable or use default
+port = int(os.getenv("PORT", 8000))
+
 app = FastAPI()
 
 # Initialize components only once when the server starts
@@ -75,4 +78,8 @@ async def voice(request: Request):
         engine.runAndWait()
         tf.seek(0)
         audio_bytes = tf.read()
-    return Response(content=audio_bytes, media_type='audio/wav') 
+    return Response(content=audio_bytes, media_type='audio/wav')
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=port) 
