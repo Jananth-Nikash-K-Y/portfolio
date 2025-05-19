@@ -13,7 +13,9 @@ export default defineConfig({
           ? '/.netlify/functions'  // Production: Netlify Functions
           : 'http://localhost:8000', // Development: Local server
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        secure: false,
+        ws: true
       }
     }
   }
