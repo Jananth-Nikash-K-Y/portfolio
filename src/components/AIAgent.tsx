@@ -367,20 +367,36 @@ export default function AIAgent() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: msg }),
       });
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
       const data = await res.json();
       setMessages(m => [...m, { from: 'agent', text: data.answer }]);
+      
       // 2. Get voice audio and play
       const voiceRes = await fetch('/api/voice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: data.answer }),
       });
-      const audioBlob = await voiceRes.blob();
+      
+      if (!voiceRes.ok) {
+        throw new Error(`HTTP error! status: ${voiceRes.status}`);
+      }
+      
+      const voiceData = await voiceRes.json();
+      const audioBlob = new Blob(
+        [Uint8Array.from(atob(voiceData.audio), c => c.charCodeAt(0))],
+        { type: `audio/${voiceData.format}` }
+      );
       const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);
       audio.play();
     } catch (e) {
-      setMessages(m => [...m, { from: 'agent', text: 'Sorry, there was a problem connecting to the AI agent.' }]);
+      console.error('Error:', e);
+      setMessages(m => [...m, { from: 'agent', text: 'Sorry, there was a problem connecting to the AI agent. Please try again later.' }]);
     } finally {
       setLoading(false);
     }
