@@ -8,7 +8,7 @@ services:
     ports:
       - "80:80"
     environment:
-      - VITE_API_URL=http://localhost:8000
+      - VITE_API_URL=https://cbe607c9-3188-4a86-a94e-294d3725463d-00-3invf2ruu5pe9.pike.replit.dev
     depends_on:
       - backend
     networks:

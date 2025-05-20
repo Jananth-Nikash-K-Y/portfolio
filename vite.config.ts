@@ -9,7 +9,9 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:8000', // Always use the local backend server
+        target: process.env.NODE_ENV === 'production' 
+          ? 'https://cbe607c9-3188-4a86-a94e-294d3725463d-00-3invf2ruu5pe9.pike.replit.dev'  // Production: Replit
+          : 'http://localhost:8000', // Development: Local server
         changeOrigin: true,
         secure: false,
         ws: true
