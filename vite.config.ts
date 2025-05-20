@@ -9,6 +9,10 @@ export default defineConfig({
     port: 5173
   },
   build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    minify: 'terser',
     rollupOptions: {
       output: {
         format: 'es',
@@ -17,5 +21,7 @@ export default defineConfig({
         assetFileNames: 'assets/[name].[hash].[ext]'
       }
     }
-  }
+  },
+  // Ensure proper base URL for Netlify
+  base: '/'
 })
