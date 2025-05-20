@@ -19,10 +19,6 @@ export default defineConfig({
     }
   },
   define: {
-    'process.env.VITE_API_URL': JSON.stringify(
-      process.env.NODE_ENV === 'production'
-        ? 'https://cbe607c9-3188-4a86-a94e-294d3725463d-00-3invf2ruu5pe9.pike.replit.dev'
-        : 'http://localhost:8000'
-    )
+    'process.env.VITE_API_URL': JSON.stringify('https://cbe607c9-3188-4a86-a94e-294d3725463d-00-3invf2ruu5pe9.pike.replit.dev')
   }
 })
