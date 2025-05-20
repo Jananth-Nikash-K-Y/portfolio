@@ -1,9 +1,0 @@
-langchain
-langchain-community
-faiss-cpu
-tokenizers
-sentence-transformers
-torch
-huggingface-hub
-pyttsx3
-python-dotenv

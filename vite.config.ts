@@ -9,11 +9,8 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: process.env.NODE_ENV === 'production' 
-          ? '/.netlify/functions'  // Production: Netlify Functions
-          : 'http://localhost:8000', // Development: Local server
+        target: 'http://localhost:8000', // Always use the local backend server
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
         secure: false,
         ws: true
       }
