@@ -3,10 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.vectorstores import FAISS
-from langchain_community.embeddings import OllamaEmbeddings
+from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.docstore.document import Document
-from langchain_community.llms import Ollama
+from langchain.llms import HuggingFaceHub
 from dotenv import load_dotenv
 import tempfile
 import pyttsx3
@@ -36,19 +36,14 @@ def init_components():
         docs = [Document(page_content=chunk) for chunk in CharacterTextSplitter(
             chunk_size=500, chunk_overlap=50).split_text(portfolio_text)]
 
-        # Ollama embeddings
-        ollama_base_url = os.getenv('OLLAMA_BASE_URL', 'http://localhost:11434')
-        embeddings = OllamaEmbeddings(
-            model="nomic-embed-text",
-            base_url=ollama_base_url
-        )
+        # Embeddings from Hugging Face
+        embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
         vectorstore = FAISS.from_documents(docs, embeddings)
 
-        # Ollama LLM
-        llm = Ollama(
-            model="tinyllama",
-            base_url=ollama_base_url,
-            temperature=0.5
+        # Hugging Face LLM (Inference via API)
+        llm = HuggingFaceHub(
+            repo_id="tiiuae/falcon-7b-instruct",
+            model_kwargs={"temperature": 0.5, "max_new_tokens": 200}
         )
 
         memory = ConversationBufferWindowMemory(k=2, memory_key='chat_history', return_messages=True)
