@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: 5173
+    port: 5173,
+    headers: {
+      'Content-Type': 'application/javascript',
+    }
   },
   build: {
     rollupOptions: {
@@ -16,9 +19,13 @@ export default defineConfig({
         chunkFileNames: 'assets/[name].[hash].js',
         assetFileNames: 'assets/[name].[hash].[ext]'
       }
+    },
+    target: 'esnext',
+    modulePreload: {
+      polyfill: false
     }
   },
   define: {
-    'process.env.VITE_API_URL': JSON.stringify('https://cbe607c9-3188-4a86-a94e-294d3725463d-00-3invf2ruu5pe9.pike.replit.dev')
+    'process.env.VITE_API_URL': JSON.stringify('https://cbe607c9-3188-4a86-a94e-294d3725463d-00-3invf2ruu5pe9.pike.replit.dev:8000/')
   }
 })
