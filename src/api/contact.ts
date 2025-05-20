@@ -52,14 +52,8 @@ export const submitContactForm = async (formData: ContactFormData): Promise<{ su
       };
     }
 
-    // Send to backend API
-    const response = await axios.post('/api/contact', formData, {
-      headers: {
-        'Content-Type': 'application/json',
-        // Add CSRF token if your backend requires it
-        // 'X-CSRF-Token': getCsrfToken()
-      }
-    });
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     return {
       success: true,
