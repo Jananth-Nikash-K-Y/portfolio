@@ -6,10 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: 5173,
-    headers: {
-      'Content-Type': 'application/javascript',
-    }
+    port: 5173
   },
   build: {
     rollupOptions: {
@@ -19,10 +16,6 @@ export default defineConfig({
         chunkFileNames: 'assets/[name].[hash].js',
         assetFileNames: 'assets/[name].[hash].[ext]'
       }
-    },
-    target: 'esnext',
-    modulePreload: {
-      polyfill: false
     }
   },
   define: {
