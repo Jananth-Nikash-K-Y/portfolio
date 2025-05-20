@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
+import api from '../api/config';
+import { ChatResponse, VoiceResponse } from '../types';
 
 function useResponsive3D() {
   const [settings, setSettings] = useState({
@@ -362,34 +364,14 @@ export default function AIAgent() {
     setLoading(true);
     try {
       // 1. Get agent response
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: msg }),
-      });
-      
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      
-      const data = await res.json();
+      const { data } = await api.post<ChatResponse>('/api/chat', { message: msg });
       setMessages(m => [...m, { from: 'agent', text: data.answer }]);
       
       // 2. Get voice audio and play
-      const voiceRes = await fetch('/api/voice', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: data.answer }),
-      });
-      
-      if (!voiceRes.ok) {
-        throw new Error(`HTTP error! status: ${voiceRes.status}`);
-      }
-      
-      const voiceData = await voiceRes.json();
+      const voiceRes = await api.post<VoiceResponse>('/api/voice', { text: data.answer });
       const audioBlob = new Blob(
-        [Uint8Array.from(atob(voiceData.audio), c => c.charCodeAt(0))],
-        { type: `audio/${voiceData.format}` }
+        [Uint8Array.from(atob(voiceRes.data.audio), c => c.charCodeAt(0))],
+        { type: `audio/${voiceRes.data.format}` }
       );
       const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);

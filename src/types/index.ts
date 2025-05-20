@@ -32,3 +32,12 @@ export interface SkillCategory {
   title: string;
   skills: Skill[];
 }
+
+export interface ChatResponse {
+  answer: string;
+}
+
+export interface VoiceResponse {
+  audio: string;
+  format: string;
+}

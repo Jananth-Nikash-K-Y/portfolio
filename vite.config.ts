@@ -6,17 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: 5173,
-    proxy: {
-      '/api': {
-        target: process.env.NODE_ENV === 'production' 
-          ? 'https://cbe607c9-3188-4a86-a94e-294d3725463d-00-3invf2ruu5pe9.pike.replit.dev'  // Production: Replit
-          : 'http://localhost:8000', // Development: Local server
-        changeOrigin: true,
-        secure: false,
-        ws: true
-      }
-    }
+    port: 5173
   },
   build: {
     rollupOptions: {
@@ -27,5 +17,12 @@ export default defineConfig({
         assetFileNames: 'assets/[name].[hash].[ext]'
       }
     }
+  },
+  define: {
+    'process.env.VITE_API_URL': JSON.stringify(
+      process.env.NODE_ENV === 'production'
+        ? 'https://cbe607c9-3188-4a86-a94e-294d3725463d-00-3invf2ruu5pe9.pike.replit.dev'
+        : 'http://localhost:8000'
+    )
   }
 })

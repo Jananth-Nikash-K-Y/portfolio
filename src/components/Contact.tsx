@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SectionTitle from './shared/SectionTitle';
 import { Send, Mail, MapPin, Phone } from 'lucide-react';
+import api from '../api/config';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -42,13 +43,12 @@ const Contact: React.FC = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await api.post('/api/contact', formData);
       setSubmitted(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
       
@@ -56,7 +56,12 @@ const Contact: React.FC = () => {
       setTimeout(() => {
         setSubmitted(false);
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitted(false);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
