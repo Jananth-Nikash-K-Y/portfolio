@@ -2,8 +2,6 @@ import React, { useRef, useEffect, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
-import api from '../api/config';
-import { ChatResponse, VoiceResponse } from '../types';
 
 function useResponsive3D() {
   const [settings, setSettings] = useState({
@@ -322,6 +320,7 @@ export default function AIAgent() {
     setName(userName);
     setStep(1);
   }
+
   function handleExploreChoice(choice: 'manual' | 'agent') {
     if (choice === 'manual') {
       setInitiallyChoseManual(true);
@@ -357,31 +356,29 @@ export default function AIAgent() {
     }
   }
 
-  // LLM chat only in step 3
+  // Static responses for chat
+  const staticResponses: { [key: string]: string } = {
+    'hi': 'Hello! How can I help you explore Jananth\'s portfolio today?',
+    'hello': 'Hi there! What would you like to know about Jananth\'s work?',
+    'projects': 'Jananth has worked on several interesting projects including AI-powered logistics agents, portfolio websites, and more. Would you like to know more about any specific project?',
+    'skills': 'Jananth is skilled in AI/ML, Full Stack Development, and has experience with technologies like Python, React, TypeScript, and more. Would you like to know more about any specific area?',
+    'experience': 'Jananth has worked at Tata Consultancy Services in various roles including AI Engineer, Full Stack Developer, and Frontend Developer. Would you like to know more about his experience?',
+    'contact': 'You can reach Jananth through email at jananthnikash.ky@outlook.in or connect with him on LinkedIn and GitHub.',
+    'default': 'I\'m sorry, I don\'t have that information. Would you like to know about Jananth\'s projects, skills, or experience instead?'
+  };
+
+  // Handle chat messages with static responses
   async function handleSend(msg: string) {
     if (step !== 3) return;
     setMessages(m => [...m, { from: 'user', text: msg }]);
     setLoading(true);
-    try {
-      // 1. Get agent response
-      const { data } = await api.post<ChatResponse>('/api/chat', { message: msg });
-      setMessages(m => [...m, { from: 'agent', text: data.answer }]);
-      
-      // 2. Get voice audio and play
-      const voiceRes = await api.post<VoiceResponse>('/api/voice', { text: data.answer });
-      const audioBlob = new Blob(
-        [Uint8Array.from(atob(voiceRes.data.audio), c => c.charCodeAt(0))],
-        { type: `audio/${voiceRes.data.format}` }
-      );
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const audio = new Audio(audioUrl);
-      audio.play();
-    } catch (e) {
-      console.error('Error:', e);
-      setMessages(m => [...m, { from: 'agent', text: 'Sorry, there was a problem connecting to the AI agent. Please try again later.' }]);
-    } finally {
+    
+    // Simulate API delay
+    setTimeout(() => {
+      const response = staticResponses[msg.toLowerCase()] || staticResponses.default;
+      setMessages(m => [...m, { from: 'agent', text: response }]);
       setLoading(false);
-    }
+    }, 1000);
   }
 
   return (
