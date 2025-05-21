@@ -4,6 +4,9 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Quicksand', 'sans-serif'],
+      },
       animation: {
         'spin-slow': 'spin 20s linear infinite',
       },

@@ -2,6 +2,17 @@ import React, { useRef, useEffect, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
+import api from '../api/config';
+
+// API response types
+interface ChatResponse {
+  answer: string;
+}
+
+interface VoiceResponse {
+  audio: string;
+  format: string;
+}
 
 function useResponsive3D() {
   const [settings, setSettings] = useState({
@@ -106,6 +117,7 @@ function ChatWindow({
         right: 0,
         width: 320,
         maxWidth: '80vw',
+        maxHeight: '80vh',
         background: 'rgba(24, 24, 32, 0.98)',
         borderRadius: 16,
         boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
@@ -221,7 +233,15 @@ function ChatWindow({
               </>
             )}
           </div>
-          <div style={{ flex: 1, overflowY: 'auto', marginBottom: 8 }}>
+          <div 
+            style={{ 
+              flex: 1, 
+              overflowY: 'auto', 
+              marginBottom: 8,
+              maxHeight: 'calc(80vh - 180px)', // Reserve space for header and input
+              paddingRight: 8, // Add some padding for the scrollbar
+            }}
+          >
             {messages.map((msg, i) => (
               <div
                 key={i}
@@ -236,6 +256,7 @@ function ChatWindow({
                   fontWeight: msg.from === 'user' ? 500 : 600,
                   fontSize: 15,
                   boxShadow: msg.from === 'user' ? 'none' : '0 2px 12px #0002',
+                  wordBreak: 'break-word', // Ensure long words don't overflow
                 }}
               >
                 {msg.text}
@@ -297,7 +318,7 @@ export default function AIAgent() {
   const [name, setName] = useState('');
   const [messages, setMessages] = useState<{ from: 'user' | 'agent'; text: string }[]>([]);
   const [loading, setLoading] = useState(false);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false); // Start with chat hidden
   const [initiallyChoseManual, setInitiallyChoseManual] = useState(false);
 
   useEffect(() => {
@@ -346,6 +367,7 @@ export default function AIAgent() {
   function handleAgentClick() {
     if (!visible) {
       setVisible(true);
+      setStep(0); // Reset to name prompt
       if (initiallyChoseManual) {
         setStep(3);
         setMessages([{
@@ -356,34 +378,40 @@ export default function AIAgent() {
     }
   }
 
-  // Static responses for chat
-  const staticResponses: { [key: string]: string } = {
-    'hi': 'Hello! How can I help you explore Jananth\'s portfolio today?',
-    'hello': 'Hi there! What would you like to know about Jananth\'s work?',
-    'projects': 'Jananth has worked on several interesting projects including AI-powered logistics agents, portfolio websites, and more. Would you like to know more about any specific project?',
-    'skills': 'Jananth is skilled in AI/ML, Full Stack Development, and has experience with technologies like Python, React, TypeScript, and more. Would you like to know more about any specific area?',
-    'experience': 'Jananth has worked at Tata Consultancy Services in various roles including AI Engineer, Full Stack Developer, and Frontend Developer. Would you like to know more about his experience?',
-    'contact': 'You can reach Jananth through email at jananthnikash.ky@outlook.in or connect with him on LinkedIn and GitHub.',
-    'default': 'I\'m sorry, I don\'t have that information. Would you like to know about Jananth\'s projects, skills, or experience instead?'
-  };
-
-  // Handle chat messages with static responses
+  // Handle chat messages with backend API
   async function handleSend(msg: string) {
     if (step !== 3) return;
     setMessages(m => [...m, { from: 'user', text: msg }]);
     setLoading(true);
     
-    // Simulate API delay
-    setTimeout(() => {
-      const response = staticResponses[msg.toLowerCase()] || staticResponses.default;
-      setMessages(m => [...m, { from: 'agent', text: response }]);
+    try {
+      // Get agent response
+      const { data } = await api.post<ChatResponse>('/api/chat', { message: msg });
+      setMessages(m => [...m, { from: 'agent', text: data.answer }]);
+      
+      // Get voice audio and play
+      const voiceRes = await api.post<VoiceResponse>('/api/voice', { text: data.answer });
+      const audioBlob = new Blob(
+        [Uint8Array.from(atob(voiceRes.data.audio), c => c.charCodeAt(0))],
+        { type: `audio/${voiceRes.data.format}` }
+      );
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      audio.play();
+    } catch (error) {
+      console.error('Error:', error);
+      setMessages(m => [...m, { 
+        from: 'agent', 
+        text: 'Sorry, there was a problem connecting to the AI agent. Please try again later.' 
+      }]);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   }
 
   return (
     <div style={{ width: '100%', height: '100%', maxWidth: 'none', margin: 0, position: 'relative' }}>
-      {progress === 1 && (
+      {progress === 1 && visible && (
         <ChatWindow
           step={step}
           name={name}
