@@ -386,11 +386,17 @@ export default function AIAgent() {
     
     try {
       // Get agent response
-      const { data } = await api.post<ChatResponse>('/api/chat', { message: msg });
+      const { data } = await api.post<ChatResponse>('/api/chat', { 
+        message: msg,
+        user_name: name // Include user name in the request
+      });
       setMessages(m => [...m, { from: 'agent', text: data.answer }]);
       
       // Get voice audio and play
-      const voiceRes = await api.post<VoiceResponse>('/api/voice', { text: data.answer });
+      const voiceRes = await api.post<VoiceResponse>('/api/voice', { 
+        text: data.answer,
+        user_name: name // Include user name in the request
+      });
       const audioBlob = new Blob(
         [Uint8Array.from(atob(voiceRes.data.audio), c => c.charCodeAt(0))],
         { type: `audio/${voiceRes.data.format}` }
@@ -398,11 +404,25 @@ export default function AIAgent() {
       const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);
       audio.play();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error:', error);
+      let errorMessage = 'Sorry, there was a problem connecting to the AI agent. Please try again later.';
+      
+      if (error.response) {
+        if (error.response.status === 502) {
+          errorMessage = 'The AI agent service is temporarily unavailable. Please try again in a few moments.';
+        } else if (error.response.status === 401) {
+          errorMessage = 'Authentication error. Please refresh the page and try again.';
+        } else if (error.response.status === 404) {
+          errorMessage = 'The requested service is not available. Please try again later.';
+        }
+      } else if (error.request) {
+        errorMessage = 'Unable to connect to the AI agent. Please check your internet connection and try again.';
+      }
+      
       setMessages(m => [...m, { 
         from: 'agent', 
-        text: 'Sorry, there was a problem connecting to the AI agent. Please try again later.' 
+        text: errorMessage
       }]);
     } finally {
       setLoading(false);
