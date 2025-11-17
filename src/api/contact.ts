@@ -58,6 +58,7 @@ const isEmailConfigValid = (): { valid: boolean; missing: string[] } => {
     serviceId: emailConfig.serviceId,
     templateId: emailConfig.templateId,
     publicKey: emailConfig.publicKey,
+    recipientEmail: emailConfig.recipientEmail,
   })
     .filter(([, value]) => !value)
     .map(([key]) => key);
