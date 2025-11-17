@@ -7,7 +7,7 @@ A modern, interactive portfolio website showcasing projects, skills, and profess
 - Horizontally scrollable, filterable project showcase
 - 3D interactive skills sphere
 - Responsive design for mobile and desktop
-- Contact form with validation
+- Contact form with validation and email delivery via EmailJS
 - Modern UI/UX with gradients and smooth transitions
 
 ## Technologies
@@ -55,6 +55,27 @@ A modern, interactive portfolio website showcasing projects, skills, and profess
 5. **Access the application:**
    - Frontend: [http://localhost:5173](http://localhost:5173)
    - Backend API: [http://localhost:8000](http://localhost:8000)
+
+### Contact Form Email Setup
+
+The contact form sends messages directly to your inbox using [EmailJS](https://www.emailjs.com/). Configure it by following these steps:
+
+1. Create an EmailJS account and add a new **Email Service** (Gmail, Outlook, etc.).
+2. Create an **Email Template** that uses the following template variables:
+   - `from_name`
+   - `from_email`
+   - `subject`
+   - `message`
+   - `to_email` (optional if you hard-code the recipient inside EmailJS)
+3. Generate a **Public Key** from the EmailJS dashboard.
+4. Create a `.env` file in the project root that contains:
+   ```bash
+   VITE_EMAILJS_SERVICE_ID=your_service_id
+   VITE_EMAILJS_TEMPLATE_ID=your_template_id
+   VITE_EMAILJS_PUBLIC_KEY=your_public_key
+   VITE_EMAILJS_RECIPIENT_EMAIL=your@email.com
+   ```
+5. Restart the Vite dev server so the new environment variables are loaded.
 
 ## Project Structure
 - `src/components/` — React components for each section

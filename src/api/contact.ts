@@ -1,4 +1,4 @@
-import axios from 'axios';
+import emailjs from '@emailjs/browser';
 
 interface ContactFormData {
   name: string;
@@ -6,6 +6,18 @@ interface ContactFormData {
   subject: string;
   message: string;
 }
+
+interface SubmitResult {
+  success: boolean;
+  message: string;
+}
+
+const emailConfig = {
+  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID ?? '',
+  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID ?? '',
+  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY ?? '',
+  recipientEmail: import.meta.env.VITE_EMAILJS_RECIPIENT_EMAIL ?? '',
+};
 
 const validateEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,7 +53,22 @@ const validateInput = (data: ContactFormData): { isValid: boolean; errors: strin
   };
 };
 
-export const submitContactForm = async (formData: ContactFormData): Promise<{ success: boolean; message: string }> => {
+const isEmailConfigValid = (): { valid: boolean; missing: string[] } => {
+  const missing = Object.entries({
+    serviceId: emailConfig.serviceId,
+    templateId: emailConfig.templateId,
+    publicKey: emailConfig.publicKey,
+  })
+    .filter(([, value]) => !value)
+    .map(([key]) => key);
+
+  return {
+    valid: missing.length === 0,
+    missing,
+  };
+};
+
+export const submitContactForm = async (formData: ContactFormData): Promise<SubmitResult> => {
   try {
     // Validate input
     const validation = validateInput(formData);
@@ -52,12 +79,32 @@ export const submitContactForm = async (formData: ContactFormData): Promise<{ su
       };
     }
 
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    const configCheck = isEmailConfigValid();
+    if (!configCheck.valid) {
+      return {
+        success: false,
+        message: `Contact service is not configured. Missing: ${configCheck.missing.join(', ')}`
+      };
+    }
+
+    await emailjs.send(
+      emailConfig.serviceId,
+      emailConfig.templateId,
+      {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_email: emailConfig.recipientEmail,
+      },
+      {
+        publicKey: emailConfig.publicKey,
+      }
+    );
 
     return {
       success: true,
-      message: 'Message sent successfully!'
+      message: 'Thank you! Your message has been sent successfully.'
     };
   } catch (error) {
     console.error('Error submitting contact form:', error);

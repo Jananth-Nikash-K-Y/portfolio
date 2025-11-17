@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SectionTitle from './shared/SectionTitle';
 import { Send, Mail, MapPin, Phone } from 'lucide-react';
+import { submitContactForm } from '../api/contact';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const Contact: React.FC = () => {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const contactRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,20 +46,31 @@ const Contact: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
     setIsSubmitting(true);
+    setFeedback(null);
     
     try {
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setSubmitted(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      const response = await submitContactForm(formData);
       
-      // Reset submission status after 5 seconds
-      setTimeout(() => {
+      if (response.success) {
+        setFeedback({ type: 'success', message: response.message });
+        setSubmitted(true);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        
+        // Reset submission status after 5 seconds
+        setTimeout(() => {
+          setSubmitted(false);
+          setFeedback(null);
+        }, 5000);
+      } else {
+        setFeedback({ type: 'error', message: response.message });
         setSubmitted(false);
-      }, 5000);
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
+      setFeedback({ type: 'error', message: 'Something went wrong. Please try again later.' });
       setSubmitted(false);
     } finally {
       setIsSubmitting(false);
@@ -115,10 +128,29 @@ const Contact: React.FC = () => {
                       />
                     </svg>
                   </div>
-                  <p>Thank you! Your message has been sent successfully.</p>
+                  <p>{feedback?.message ?? 'Thank you! Your message has been sent successfully.'}</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
+                  {feedback?.type === 'error' && (
+                    <div className="bg-red-900/40 border border-red-500/50 rounded-lg p-4 text-red-200 flex items-start gap-3 mb-6">
+                      <div className="p-2 rounded-full bg-red-800/60">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l6.518 11.597c.75 1.335-.213 3.004-1.743 3.004H3.482c-1.53 0-2.493-1.669-1.743-3.004L8.257 3.1zM11 14a1 1 0 10-2 0 1 1 0 002 0zm-1-2a1 1 0 01-1-1V8a1 1 0 112 0v3a1 1 0 01-1 1z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <p>{feedback.message}</p>
+                    </div>
+                  )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">
