@@ -83,7 +83,7 @@ export const projectsData: Project[] = [
     category: 'personal',
     categoryName: 'Personal Project',
     technologies: ['LaTeX', 'Tex', 'GitHub'],
-    liveUrl: 'assets/Jananth_Nikash_K_Y.pdf',
+    liveUrl: 'assets/Jananth Nikash K Y.pdf',
     githubUrl: 'https://github.com/Jananth-Nikash-K-Y/Resume-template-Latex'
   },
   {
