@@ -2,6 +2,22 @@ import { Experience } from '../types';
 
 export const experienceData: Experience[] = [
   {
+    id: 0,
+    role: 'Technical Consultant – AI Integration',
+    company: 'IBM India Pvt. Ltd.',
+    companyLogo: 'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg',
+    companyUrl: 'https://www.ibm.com/in-en',
+    location: 'India',
+    startDate: 'Jul 2026',
+    endDate: 'Present',
+    responsibilities: [
+      'Consulting on AI integration strategies and implementing enterprise-grade AI solutions.',
+      'Leveraging IBM watsonx.ai to build and deploy foundation models and AI workflows.',
+      'Driving AI adoption across business units by bridging technical implementation with client requirements.'
+    ],
+    technologies: ['watsonx.ai', 'Agentic AI', 'GenAI', 'Python', 'LangChain']
+  },
+  {
     id: 1,
     role: 'AI Engineer',
     company: 'Tata Consultancy Services',
@@ -9,7 +25,7 @@ export const experienceData: Experience[] = [
     companyUrl: 'https://www.tcs.com',
     location: 'Chennai, India',
     startDate: 'Dec 2024',
-    endDate: 'Present',
+    endDate: 'Jun 2026',
     responsibilities: [
       'Led the AI integration for ContAI, enhancing global container tracking with GenAI APIs.',
       'Developed and deployed AI/ML systems into full-stack enterprise applications.',
