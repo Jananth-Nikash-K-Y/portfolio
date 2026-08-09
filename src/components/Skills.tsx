@@ -82,7 +82,7 @@ const SkillSphere = () => {
       wrapper.className = "iconWrapper";
 
       const img = document.createElement("img");
-      img.src = `https://unpkg.com/simple-icons@9.1.0/icons/${skill.slug}.svg`;
+      img.src = `https://unpkg.com/simple-icons@13/icons/${skill.slug}.svg`;
       img.alt = skill.name;
       img.style.width = "40px";
       img.style.filter =
