@@ -1,24 +1,25 @@
 import axios from 'axios';
 
+const BASE_URL = 'https://portfolioagent-sklw.onrender.com';
+
 // Create axios instance with default config
 const api = axios.create({
-  baseURL: 'https://portfolioagent-sklw.onrender.com',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
   withCredentials: false,
-  timeout: 60000, // 60 second timeout
+  timeout: 90000, // 90 second timeout to handle Render cold start (up to 60s)
 });
 
 // Retry configuration
 const MAX_RETRIES = 3;
-const RETRY_DELAY = 1000; // 1 second
+const RETRY_DELAY = 2000; // 2 seconds between retries
 
-// Add request interceptor for error handling
+// Add request interceptor
 api.interceptors.request.use(
   (config) => {
-    // Ensure we're sending the correct data format
     if (config.data && typeof config.data === 'object') {
       config.data = JSON.stringify(config.data);
     }
@@ -30,58 +31,45 @@ api.interceptors.request.use(
   }
 );
 
-// Add response interceptor for error handling and retries
+// Add response interceptor with retry logic
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const config = error.config;
-    
-    // Initialize retry count if not set
     config.retryCount = config.retryCount || 0;
-    
-    // Check if we should retry the request
-    if (config.retryCount < MAX_RETRIES && (
-      error.code === 'ECONNABORTED' || // Timeout
-      !error.response || // No response
-      error.response.status === 502 || // Bad Gateway
-      error.response.status === 503 || // Service Unavailable
-      error.response.status === 504    // Gateway Timeout
-    )) {
+
+    const shouldRetry =
+      config.retryCount < MAX_RETRIES &&
+      (error.code === 'ECONNABORTED' ||
+        !error.response ||
+        error.response.status === 502 ||
+        error.response.status === 503 ||
+        error.response.status === 504);
+
+    if (shouldRetry) {
       config.retryCount += 1;
-      
-      // Log retry attempt
       console.log(`Retrying request (${config.retryCount}/${MAX_RETRIES})...`);
-      
-      // Wait before retrying
-      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * config.retryCount));
-      
-      // Retry the request
+      await new Promise((resolve) =>
+        setTimeout(resolve, RETRY_DELAY * config.retryCount)
+      );
       return api(config);
     }
-    
-    // Handle specific error cases
-    if (error.response) {
-      // Server responded with error
-      console.error('API Error:', error.response.data);
-      if (error.response.status === 401) {
-        // Handle unauthorized
-        console.error('Unauthorized access');
-      } else if (error.response.status === 404) {
-        // Handle not found
-        console.error('Resource not found');
-      } else if (error.response.status === 502) {
-        // Handle bad gateway
-        console.error('Agent service is temporarily unavailable');
-      }
-    } else if (error.request) {
-      // Request made but no response
-      console.error('Network Error: No response received');
-    } else {
-      // Error in request setup
-      console.error('Request Error:', error.message);
-    }
+
     return Promise.reject(error);
   }
 );
 
-export default api; 
+/**
+ * Silently ping the agent backend to wake it up from Render's cold start.
+ * Called on page load so the service is warm by the time the user opens the chat.
+ */
+export async function warmUpAgent(): Promise<void> {
+  try {
+    await axios.get(`${BASE_URL}/`, { timeout: 90000 });
+    console.log('[Agent] Service warmed up.');
+  } catch {
+    // Ignore — best effort warm-up, don't surface to user
+  }
+}
+
+export default api;
