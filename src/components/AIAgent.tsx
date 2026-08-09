@@ -444,17 +444,24 @@ export default function AIAgent() {
       }
     } catch (error: any) {
       console.error('Chat error:', error);
-      let errorMessage =
-        'Sorry, something went wrong. Please try again.';
+      let errorMessage = 'Sorry, something went wrong. Please try again.';
 
       if (!error.response) {
-        errorMessage =
-          'Could not reach the AI agent. It may still be waking up — please wait a moment and try again.';
+        errorMessage = 'Could not reach the AI agent. It may still be waking up — please wait a moment and try again.';
         setAgentStatus('error');
-      } else if (error.response.status === 502 || error.response.status === 503) {
-        errorMessage =
-          'The AI agent is temporarily unavailable. Please try again in a few moments.';
+      } else if (error.response.status === 503) {
+        // Server responded with a meaningful error (agent not ready / key missing)
+        const serverMsg = error.response.data?.error || '';
+        errorMessage = serverMsg
+          ? `Agent not ready: ${serverMsg}`
+          : 'The AI agent is starting up. Please wait a moment and try again.';
         setAgentStatus('error');
+      } else if (error.response.status === 502 || error.response.status === 504) {
+        errorMessage = 'The AI agent is temporarily unavailable. Please try again in a few moments.';
+        setAgentStatus('error');
+      } else if (error.response.status === 500) {
+        const serverMsg = error.response.data?.error || '';
+        errorMessage = serverMsg ? `Server error: ${serverMsg}` : 'An internal error occurred. Please try again.';
       }
 
       setMessages((m) => [...m, { from: 'agent', text: errorMessage }]);
