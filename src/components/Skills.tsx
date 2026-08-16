@@ -1,5 +1,6 @@
 import { PerspectiveCamera, Scene, Vector3, Group } from "three";
 import { useEffect, useRef } from "react";
+import { useTheme } from "../context/ThemeContext";
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls";
 import {
   CSS2DRenderer,
@@ -52,6 +53,7 @@ const SkillSphere = () => {
   const groupRef = useRef<Group>();
   const controlsRef = useRef<TrackballControls>();
   const requestRef = useRef<number>();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const container = containerRef.current!;
@@ -88,6 +90,13 @@ const SkillSphere = () => {
       const label = document.createElement("p");
       label.textContent = skill.name;
       label.className = "label";
+      label.style.color = document.documentElement.classList.contains("dark") ? "rgba(209,213,219,0.85)" : "rgba(55,65,81,0.9)";
+      label.style.fontSize = "11px";
+      label.style.marginTop = "4px";
+      label.style.textAlign = "center";
+      label.style.fontFamily = "Quicksand, sans-serif";
+      label.style.fontWeight = "600";
+      label.style.userSelect = "none";
 
       wrapper.appendChild(img);
       wrapper.appendChild(label);
@@ -148,7 +157,7 @@ const SkillSphere = () => {
       window.removeEventListener("resize", resize);
       container.removeChild(renderer.domElement);
     };
-  }, []);
+  }, [theme]);
 
   return (
     <section id="skills" className="py-10 text-white text-center">

@@ -67,3 +67,19 @@
   0%   { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
+
+/* Skills sphere label — adapts to dark/light theme */
+.label {
+  color: rgba(55, 65, 81, 0.9);
+  font-size: 11px;
+  margin-top: 4px;
+  text-align: center;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+  user-select: none;
+  pointer-events: none;
+}
+
+.dark .label {
+  color: rgba(209, 213, 219, 0.85);
+}
