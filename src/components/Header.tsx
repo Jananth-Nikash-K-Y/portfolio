@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Github, Linkedin, Twitter, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import JKLogo from './shared/JKLogo';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -43,7 +42,7 @@ const Header: React.FC = () => {
 
           {/* Logo */}
           <a href="#home" className="flex items-center gap-2">
-            <JKLogo size={38} />
+            <img src="/assets/logo/logoV2.png" alt="Logo" className="w-9 h-9 object-contain" />
             <span
               className="hidden sm:block text-sm font-medium tracking-widest text-gray-700 dark:text-gray-300"
               style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11 }}

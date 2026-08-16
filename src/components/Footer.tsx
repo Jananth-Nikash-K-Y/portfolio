@@ -1,6 +1,5 @@
 import React from 'react';
 import { Github, Linkedin, Twitter, ChevronUp } from 'lucide-react';
-import JKLogo from './shared/JKLogo';
 
 const Footer: React.FC = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -32,7 +31,7 @@ const Footer: React.FC = () => {
 
           {/* Logo + name */}
           <a href="#home" className="flex flex-col items-center gap-2">
-            <JKLogo size={44} />
+            <img src="/assets/logo/logoV2.png" alt="Logo" className="w-10 h-10 object-contain" />
             <span
               className="text-gray-600 dark:text-gray-400"
               style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, letterSpacing: '0.2em' }}
