@@ -44,7 +44,7 @@ const Projects: React.FC = () => {
     : projectsData.filter(project => project.category === category);
 
   return (
-    <section id="projects" className="py-20 bg-gray-900/50">
+    <section id="projects" className="py-20 bg-gray-100/80 dark:bg-gray-900/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionTitle>Featured Projects</SectionTitle>
         
@@ -57,7 +57,7 @@ const Projects: React.FC = () => {
                 className={`min-w-[120px] w-32 px-2 py-2 rounded-full font-medium whitespace-nowrap transition
                   ${category === cat.id
                     ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-md'
-                    : 'bg-[#23283b] text-gray-300'}
+                    : 'bg-gray-200 dark:bg-[#23283b] text-gray-700 dark:text-gray-300'}
                   focus:outline-none focus:ring-2 focus:ring-purple-400`}
               >
                 {cat.name}

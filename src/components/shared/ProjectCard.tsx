@@ -16,7 +16,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
   return (
     <div 
-      className="group relative rounded-lg overflow-hidden bg-gray-800 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple-500/10"
+      className="group relative rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-gray-100 dark:border-transparent transform transition-all duration-300 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple-500/10"
       style={{ animationDelay: getDelay() }}
       onMouseEnter={() => setShowDetails(true)}
       onMouseLeave={() => setShowDetails(false)}
@@ -37,11 +37,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       </div>
       
       <div className="p-6">
-        <h3 className="text-xl font-semibold mb-2 text-white group-hover:text-purple-400 transition-colors">
+        <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors">
           {project.title}
         </h3>
         
-        <p className="text-gray-400 mb-4 line-clamp-2">
+        <p className="text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
           {project.description}
         </p>
         
@@ -49,7 +49,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
           {project.technologies.map((tech, techIndex) => (
             <span 
               key={techIndex}
-              className="text-xs px-2 py-1 rounded-full bg-gray-700 text-gray-300"
+              className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
             >
               {tech}
             </span>
@@ -62,13 +62,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-1"
+              className="text-sm font-medium text-purple-500 dark:text-purple-400 hover:text-purple-600 dark:hover:text-purple-300 transition-colors flex items-center gap-1"
             >
               View Project
               <ExternalLink size={14} />
             </a>
           ) : (
-            <span className="text-sm font-medium text-gray-500">Project Demo Not Available</span>
+            <span className="text-sm font-medium text-gray-400 dark:text-gray-500">Project Demo Not Available</span>
           )}
           
           {project.githubUrl && (
@@ -76,7 +76,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors"
+              className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-700 dark:text-gray-300"
               aria-label="GitHub Repository"
             >
               <Github size={18} />

@@ -15,7 +15,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ experience, index }) => {
       {/* Left column (or right on mobile) */}
       <div className={`w-full md:w-1/2 mb-6 md:mb-0 flex ${isEven ? 'justify-start md:pr-12' : 'justify-end md:pl-12'}`}>
         <div
-          className={`p-6 rounded-lg bg-gray-800 hover:bg-gray-800/80 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/10`}
+          className={`p-6 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/80 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/10 border border-gray-100 dark:border-transparent`}
         >
           <div className="flex items-center gap-2 mb-4">
             <img
@@ -24,15 +24,15 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ experience, index }) => {
               className="w-10 h-10 rounded-md object-contain bg-white p-1"
             />
             <div>
-              <h3 className="text-xl font-bold text-white">{experience.role}</h3>
-              <div className="flex items-center gap-1 text-gray-400">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">{experience.role}</h3>
+              <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
                 <span>{experience.company}</span>
                 {experience.companyUrl && (
                   <a
                     href={experience.companyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-purple-400 hover:text-purple-300"
+                    className="text-purple-500 dark:text-purple-400 hover:text-purple-600 dark:hover:text-purple-300"
                     aria-label={`Visit ${experience.company} website`}
                   >
                     <ExternalLink size={14} />
@@ -42,11 +42,11 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ experience, index }) => {
             </div>
           </div>
 
-          <div className="mb-4 text-gray-400 text-sm">
+          <div className="mb-4 text-gray-500 dark:text-gray-400 text-sm">
             {experience.startDate} - {experience.endDate}
           </div>
           
-          <ul className="list-disc pl-5 space-y-2 text-gray-300">
+          <ul className="list-disc pl-5 space-y-2 text-gray-600 dark:text-gray-300">
             {experience.responsibilities.map((responsibility, rIndex) => (
               <li key={rIndex}>{responsibility}</li>
             ))}
@@ -56,7 +56,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ experience, index }) => {
             {experience.technologies.map((tech, techIndex) => (
               <span
                 key={techIndex}
-                className="text-xs px-2 py-1 rounded-full bg-gray-700 text-gray-300"
+                className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
               >
                 {tech}
               </span>
@@ -68,7 +68,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ experience, index }) => {
       {/* Timeline center */}
       <div className="md:hidden absolute left-0 w-1 h-full bg-gray-800"></div>
       <div className="flex items-center justify-center z-10">
-        <div className="w-6 h-6 rounded-full bg-purple-600 border-4 border-gray-900"></div>
+        <div className="w-6 h-6 rounded-full bg-purple-600 border-4 border-gray-50 dark:border-gray-900"></div>
       </div>
       
       {/* Right column (or left on mobile) - Empty for content balance */}

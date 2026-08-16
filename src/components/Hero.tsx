@@ -53,7 +53,7 @@ const Hero: React.FC = () => {
         {/* Profile Picture */}
         <div className="relative w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 flex-shrink-0 flex items-center justify-center mx-auto lg:mx-0">
           <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-blue-600 to-emerald-600 rounded-full blur opacity-75 animate-pulse"></div>
-          <div className="relative h-full w-full rounded-full overflow-hidden border-4 border-gray-800 shadow-2xl">
+          <div className="relative h-full w-full rounded-full overflow-hidden border-4 border-gray-200 dark:border-gray-800 shadow-2xl">
             <img
               src="/assets/profile.jpg"
               alt="Jananth Nikash"
@@ -77,7 +77,7 @@ const Hero: React.FC = () => {
             <br />
             with AI & Engineering
           </h1>
-          <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mb-8">
+          <p className="text-xl md:text-2xl text-gray-500 dark:text-gray-400 max-w-3xl mb-8">
             Specializing in AI agents, model development, and full-stack solutions that bridge innovation with practical applications.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mb-16">
@@ -100,7 +100,7 @@ const Hero: React.FC = () => {
             </button>
             <a
               href="#contact"
-              className="px-8 py-3 rounded-md bg-gray-800 text-white font-medium transition-transform hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+              className="px-8 py-3 rounded-md bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white font-medium transition-transform hover:scale-105 hover:bg-gray-300 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             >
               Contact Me
             </a>
@@ -109,9 +109,9 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Tech floating elements */}
-      <div className="absolute top-1/4 left-10 w-16 h-16 rounded-full bg-purple-900/30 backdrop-blur-xl animate-float"></div>
-      <div className="absolute top-2/3 right-20 w-24 h-24 rounded-full bg-blue-900/20 backdrop-blur-xl animate-float-delayed"></div>
-      <div className="absolute bottom-1/4 left-1/3 w-20 h-20 rounded-full bg-emerald-900/20 backdrop-blur-xl animate-float-slow"></div>
+      <div className="absolute top-1/4 left-10 w-16 h-16 rounded-full bg-purple-500/10 dark:bg-purple-900/30 backdrop-blur-xl animate-float"></div>
+      <div className="absolute top-2/3 right-20 w-24 h-24 rounded-full bg-blue-500/10 dark:bg-blue-900/20 backdrop-blur-xl animate-float-delayed"></div>
+      <div className="absolute bottom-1/4 left-1/3 w-20 h-20 rounded-full bg-emerald-500/10 dark:bg-emerald-900/20 backdrop-blur-xl animate-float-slow"></div>
     </section>
   );
 };

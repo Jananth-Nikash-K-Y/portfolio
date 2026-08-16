@@ -10,12 +10,12 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-gray-900 py-12">
+    <footer className="bg-gray-100 dark:bg-gray-900 py-12 border-t border-gray-200 dark:border-gray-800">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center">
           <button
             onClick={scrollToTop}
-            className="p-3 rounded-full bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors mb-8"
+            className="p-3 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors mb-8"
             aria-label="Scroll to top"
           >
             <ChevronUp size={24} />
@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
           <a href="#home" className="flex items-center gap-2 mb-6">
             <div className="relative w-10 h-10">
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-blue-500 animate-pulse"></div>
-              <div className="absolute inset-1 rounded-full bg-gray-900 flex items-center justify-center overflow-hidden">
+              <div className="absolute inset-1 rounded-full bg-white dark:bg-gray-900 flex items-center justify-center overflow-hidden">
                 <img src="/assets/logo/logoV2.png" alt="Logo" className="w-8 h-8 object-contain" />
               </div>
             </div>
@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
             <a href="#contact" className="hover:text-purple-400 transition-colors">Contact</a>
           </div> */}
           
-          <div className="text-center text-gray-500 text-sm">
+          <div className="text-center text-gray-400 dark:text-gray-500 text-sm">
             <p>© {new Date().getFullYear()} Jananth Nikash. All rights reserved.</p>
           </div>
         </div>

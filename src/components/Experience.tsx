@@ -39,7 +39,7 @@ const Experience: React.FC = () => {
           className="mt-12 relative opacity-0 transform translate-y-10 transition-all duration-1000"
         >
           {/* Timeline line */}
-          <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-1 h-full bg-gray-800 z-0"></div>
+          <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-1 h-full bg-gray-200 dark:bg-gray-800 z-0"></div>
           
           {/* Timeline items */}
           <div className="relative z-10">
@@ -58,7 +58,7 @@ const Experience: React.FC = () => {
             href="assets/Jananth Nikash K Y.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-md border border-purple-500 text-purple-500 font-medium hover:bg-purple-500/10 transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-md border border-purple-500 text-purple-500 dark:text-purple-400 font-medium hover:bg-purple-500/10 transition-all"
           >
             <span>Download Full Resume</span>
             <span>↓</span>

@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+import { useTheme } from '../../context/ThemeContext';
 
 const ParticleBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -19,10 +21,12 @@ const ParticleBackground: React.FC = () => {
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    // Particle properties
+    // Particle properties — adapt to theme
     const particlesArray: Particle[] = [];
     const numberOfParticles = Math.min(100, Math.floor((canvas.width * canvas.height) / 9000));
-    const colors = ['rgba(107, 33, 168, 0.8)', 'rgba(30, 64, 175, 0.6)', 'rgba(16, 185, 129, 0.6)'];
+    const colors = theme === 'dark'
+      ? ['rgba(107, 33, 168, 0.8)', 'rgba(30, 64, 175, 0.6)', 'rgba(16, 185, 129, 0.6)']
+      : ['rgba(147, 51, 234, 0.4)', 'rgba(59, 130, 246, 0.35)', 'rgba(16, 185, 129, 0.35)'];
 
     class Particle {
       x: number;
@@ -76,7 +80,10 @@ const ParticleBackground: React.FC = () => {
 
           if (distance < maxDistance) {
             const opacity = 1 - distance / maxDistance;
-            ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.15})`;
+            const isDark = document.documentElement.classList.contains('dark');
+            ctx.strokeStyle = isDark
+              ? `rgba(148, 163, 184, ${opacity * 0.15})`
+              : `rgba(100, 116, 139, ${opacity * 0.12})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
@@ -119,7 +126,7 @@ const ParticleBackground: React.FC = () => {
       window.removeEventListener('resize', handleResize);
       canvas.removeEventListener('mousemove', () => {});
     };
-  }, []);
+  }, [theme]);
 
   return (
     <canvas
