@@ -99,7 +99,7 @@ const Contact: React.FC = () => {
   ];
 
   return (
-    <section id="contact" className="py-20 bg-gray-50 dark:bg-gray-900/50">
+    <section id="contact" className="py-20 bg-gray-50 dark:bg-gray-950/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionTitle>Get In Touch</SectionTitle>
         
@@ -109,12 +109,12 @@ const Contact: React.FC = () => {
         >
           {/* Contact form - 3 columns */}
           <div className="lg:col-span-3">
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8">
-              <h3 className="text-2xl font-semibold mb-6">Send a Message</h3>
+            <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-100 dark:border-transparent shadow-sm">
+              <h3 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">Send a Message</h3>
               
               {submitted ? (
-                <div className="bg-green-900/50 rounded-lg p-4 text-green-200 flex items-center gap-3">
-                  <div className="p-2 rounded-full bg-green-800">
+                <div className="bg-green-50 dark:bg-green-900/50 rounded-lg p-4 text-green-800 dark:text-green-200 flex items-center gap-3 border border-green-200 dark:border-transparent">
+                  <div className="p-2 rounded-full bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5"
@@ -153,7 +153,7 @@ const Contact: React.FC = () => {
                   )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
                         Your Name
                       </label>
                       <input
@@ -163,7 +163,7 @@ const Contact: React.FC = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+                        className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
                         placeholder="John Doe"
                       />
                     </div>
@@ -178,7 +178,7 @@ const Contact: React.FC = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+                        className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
                         placeholder="john@example.com"
                       />
                     </div>
@@ -252,16 +252,16 @@ const Contact: React.FC = () => {
               <div className="space-y-6 mb-8">
                 {contactInfo.map((info, index) => (
                   <div key={index} className="flex items-start gap-4">
-                    <div className="p-3 rounded-md bg-gray-900 text-gray-100">
+                    <div className="p-3 rounded-md bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-100">
                       {info.icon}
                     </div>
                     <div>
-                      <h4 className="text-gray-400 font-medium">{info.title}</h4>
+                      <h4 className="text-gray-500 dark:text-gray-400 font-medium">{info.title}</h4>
                       <a 
                         href={info.link} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-lg text-gray-100 hover:text-purple-400 transition-colors break-all"
+                        className="text-lg text-gray-800 dark:text-gray-100 hover:text-purple-500 dark:hover:text-purple-400 transition-colors break-all"
                       >
                         {info.value}
                       </a>
@@ -271,7 +271,7 @@ const Contact: React.FC = () => {
               </div>
               
               <div className="mt-10">
-                <h4 className="text-lg font-medium mb-4">Follow Me</h4>
+                <h4 className="text-lg font-medium mb-4 text-gray-900 dark:text-white">Follow Me</h4>
                 <div className="flex space-x-3 mb-6 w-full">
                   <SocialIcon name="GitHub" link="https://github.com/Jananth-Nikash-K-Y/" />
                   <SocialIcon name="LinkedIn" link="https://in.linkedin.com/in/jananth-nikash-k-y" />
@@ -293,7 +293,7 @@ const SocialIcon: React.FC<{ name: string; link: string }> = ({ name, link }) =>
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="p-3 bg-gray-900 rounded-full hover:bg-gray-700 transition-colors hover:text-purple-400"
+      className="p-3 bg-gray-100 dark:bg-gray-900 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300 hover:text-purple-500 dark:hover:text-purple-400"
       aria-label={name}
     >
       <svg className="w-5 h-5" fill="currentColor" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
