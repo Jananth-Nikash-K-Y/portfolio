@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowDown, Lock, Unlock } from 'lucide-react';
+import { Lock, Unlock } from 'lucide-react';
 
 const Hero: React.FC = () => {
   const textRef = useRef<HTMLDivElement>(null);
@@ -8,25 +8,11 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-in');
-          }
-        });
-      },
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('animate-fade-in'); }),
       { threshold: 0.1 }
     );
-
-    if (textRef.current) {
-      observer.observe(textRef.current);
-    }
-
-    return () => {
-      if (textRef.current) {
-        observer.unobserve(textRef.current);
-      }
-    };
+    if (textRef.current) observer.observe(textRef.current);
+    return () => { if (textRef.current) observer.unobserve(textRef.current); };
   }, []);
 
   const handleUnlockClick = (e: React.MouseEvent) => {
@@ -41,77 +27,103 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section
-      id="home"
-      className="relative min-h-screen flex items-center justify-center pt-16"
-    >
-      {/* Hero Content */}
+    <section id="home" className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+
+      {/* Ambient orbs — restrained, no rainbow */}
+      <div className="absolute top-1/4 left-16 w-64 h-64 rounded-full bg-iris/5 dark:bg-iris/10 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/3 right-16 w-80 h-80 rounded-full bg-gold/5 dark:bg-gold/8 blur-3xl pointer-events-none" />
+
+      {/* Hairline grid overlay — vintage technical drawing feel */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.05]"
+        style={{
+          backgroundImage: `linear-gradient(var(--gold) 1px, transparent 1px), linear-gradient(90deg, var(--gold) 1px, transparent 1px)`,
+          backgroundSize: '80px 80px',
+        }}
+      />
+
       <div
         ref={textRef}
-        className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col-reverse lg:flex-row items-center justify-center gap-12 opacity-0"
+        className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col-reverse lg:flex-row items-center justify-center gap-16 opacity-0"
       >
-        {/* Profile Picture */}
-        <div className="relative w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 flex-shrink-0 flex items-center justify-center mx-auto lg:mx-0">
-          <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-blue-600 to-emerald-600 rounded-full blur opacity-75 animate-pulse"></div>
-          <div className="relative h-full w-full rounded-full overflow-hidden border-4 border-gray-200 dark:border-gray-800 shadow-2xl">
-            <img
-              src="/assets/profile.jpg"
-              alt="Jananth Nikash"
-              className="w-full h-full object-cover object-top rounded-full"
+        {/* Profile — octagonal frame for a distinctive non-circular crop */}
+        <div className="relative flex-shrink-0 flex items-center justify-center">
+          <div
+            className="relative w-52 h-52 sm:w-64 sm:h-64 lg:w-80 lg:h-80"
+            style={{ clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)' }}
+          >
+            {/* Gold border ring */}
+            <div
+              className="absolute -inset-[3px] animate-pulse-slow"
+              style={{
+                background: 'linear-gradient(135deg, var(--gold), var(--iris), var(--gold))',
+                clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)',
+              }}
             />
+            <div
+              className="absolute inset-[3px] overflow-hidden"
+              style={{ clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)' }}
+            >
+              <img
+                src="/assets/profile.jpg"
+                alt="Jananth Nikash"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
           </div>
         </div>
 
-        {/* Text Content */}
-        <div className="flex-1 text-center lg:text-left flex flex-col items-center lg:items-start">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-emerald-400">
-            I'm Jananth
+        {/* Text */}
+        <div className="flex-1 text-center lg:text-left flex flex-col items-center lg:items-start max-w-2xl">
+          {/* Monospaced eyebrow */}
+          <p className="section-eyebrow mb-5">Technical Consultant · AI Integration · IBM</p>
+
+          {/* Display name in Cormorant */}
+          <h2
+            className="text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.05] mb-3 text-gray-900 dark:text-linen"
+            style={{ fontFamily: '"Cormorant Garant", Georgia, serif' }}
+          >
+            Jananth Nikash
           </h2>
-          <div className="inline-block mb-4 px-6 py-2 border border-purple-500 rounded-full text-purple-500 text-sm font-medium tracking-wide">
-            AI ENGINEER
-          </div>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-blue-500 to-emerald-500">
-              Building the Future
-            </span>
-            <br />
-            with AI & Engineering
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-500 dark:text-gray-400 max-w-3xl mb-8">
-            Specializing in AI agents, model development, and full-stack solutions that bridge innovation with practical applications.
+
+          {/* Gold rule */}
+          <div className="w-12 h-px mb-6 lg:mr-auto" style={{ background: 'var(--gold)' }} />
+
+          {/* Tagline in DM Sans */}
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-xl mb-10 leading-relaxed font-light">
+            Building intelligent systems at the intersection of AI research and enterprise engineering.
+            Agents, models, and full-stack solutions that actually ship.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 mb-16">
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            {/* Primary CTA */}
             <button
               onClick={handleUnlockClick}
-              className={`relative flex items-center gap-2 px-8 py-3 rounded-md bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900 overflow-hidden ${shimmer ? 'animate-shimmer' : ''}`}
-              style={{ minWidth: 220 }}
+              className="relative flex items-center justify-center gap-2 px-7 py-3 text-white text-sm font-medium tracking-wide overflow-hidden transition-all hover:shadow-lg hover:shadow-iris/30"
+              style={{ background: 'linear-gradient(135deg, var(--iris), #5b3f8a)', borderRadius: 2 }}
             >
-              <span className="flex items-center">
-                {unlocked ? (
-                  <Unlock size={20} className="mr-2 transition-transform duration-300 rotate-12" />
-                ) : (
-                  <Lock size={20} className="mr-2 transition-transform duration-300" />
-                )}
-                Unlock My Projects
+              <span className="flex items-center gap-2 z-10">
+                {unlocked
+                  ? <Unlock size={16} className="transition-transform duration-300 rotate-12" />
+                  : <Lock size={16} className="transition-transform duration-300" />}
+                Unlock Projects
               </span>
               {shimmer && (
-                <span className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-80 animate-shimmer-effect" />
+                <span className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer-effect" />
               )}
             </button>
+
+            {/* Secondary CTA — gold outline */}
             <a
               href="#contact"
-              className="px-8 py-3 rounded-md bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white font-medium transition-transform hover:scale-105 hover:bg-gray-300 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              className="flex items-center justify-center px-7 py-3 text-sm font-medium tracking-wide transition-all hover:bg-gold/10"
+              style={{ border: '1px solid var(--gold)', color: 'var(--gold)', borderRadius: 2 }}
             >
-              Contact Me
+              Get In Touch
             </a>
           </div>
         </div>
       </div>
-
-      {/* Tech floating elements */}
-      <div className="absolute top-1/4 left-10 w-16 h-16 rounded-full bg-purple-500/10 dark:bg-purple-900/30 backdrop-blur-xl animate-float"></div>
-      <div className="absolute top-2/3 right-20 w-24 h-24 rounded-full bg-blue-500/10 dark:bg-blue-900/20 backdrop-blur-xl animate-float-delayed"></div>
-      <div className="absolute bottom-1/4 left-1/3 w-20 h-20 rounded-full bg-emerald-500/10 dark:bg-emerald-900/20 backdrop-blur-xl animate-float-slow"></div>
     </section>
   );
 };

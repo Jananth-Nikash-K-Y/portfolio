@@ -8,78 +8,99 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
-  const [showDetails, setShowDetails] = useState(false);
-
-  const getDelay = () => {
-    return `${(index % 3) * 150}ms`;
-  };
+  const [hovered, setHovered] = useState(false);
+  const delay = `${(index % 3) * 120}ms`;
 
   return (
-    <div 
-      className="group relative rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-gray-100 dark:border-transparent transform transition-all duration-300 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple-500/10"
-      style={{ animationDelay: getDelay() }}
-      onMouseEnter={() => setShowDetails(true)}
-      onMouseLeave={() => setShowDetails(false)}
+    <div
+      className="group relative flex flex-col overflow-hidden transition-all duration-300 hover-iris"
+      style={{
+        animationDelay: delay,
+        background: hovered
+          ? 'rgba(123,94,167,0.04)'
+          : 'rgba(255,255,255,0.6)',
+        border: '1px solid rgba(201,169,110,0.2)',
+        borderRadius: 2,
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
+      {/* Thin gold top edge on hover */}
+      <div
+        className="absolute top-0 left-0 right-0 h-px transition-opacity duration-300"
+        style={{ background: 'var(--gold)', opacity: hovered ? 1 : 0 }}
+      />
+
+      {/* Image */}
       <div className="aspect-video relative overflow-hidden">
-        <img 
-          src={project.image} 
-          alt={project.title} 
-          className="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-110"
+        <img
+          src={project.image}
+          alt={project.title}
+          className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
         />
-        
-        <div className={`absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent transition-opacity duration-300 ${showDetails ? 'opacity-90' : 'opacity-50'}`}></div>
-        
-        {/* Floating category tag */}
-        <div className="absolute top-4 left-4 px-3 py-1 bg-purple-500/80 backdrop-blur-sm rounded-full text-xs font-medium">
+        <div className={`absolute inset-0 transition-opacity duration-300 ${hovered ? 'opacity-60' : 'opacity-30'}`}
+          style={{ background: 'linear-gradient(to top, #0D0D12, transparent)' }} />
+
+        {/* Category tag */}
+        <div
+          className="absolute top-3 left-3 px-2 py-0.5 text-white"
+          style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, letterSpacing: '0.1em', background: 'var(--iris)', borderRadius: 1 }}
+        >
           {project.categoryName}
         </div>
       </div>
-      
-      <div className="p-6">
-        <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors">
+
+      {/* Body */}
+      <div className="flex flex-col flex-1 p-5">
+        <h3
+          className="text-xl font-semibold mb-2 text-gray-900 dark:text-linen transition-colors group-hover:text-iris"
+          style={{ fontFamily: '"Cormorant Garant", serif' }}
+        >
           {project.title}
         </h3>
-        
-        <p className="text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
+
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 leading-relaxed line-clamp-2 flex-1">
           {project.description}
         </p>
-        
-        <div className="mb-5 flex flex-wrap gap-2">
-          {project.technologies.map((tech, techIndex) => (
-            <span 
-              key={techIndex}
-              className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+
+        {/* Tech tags */}
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          {project.technologies.map((tech, i) => (
+            <span
+              key={i}
+              className="text-gray-600 dark:text-gray-400"
+              style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, letterSpacing: '0.06em', padding: '2px 7px', border: '1px solid rgba(201,169,110,0.25)', borderRadius: 1 }}
             >
               {tech}
             </span>
           ))}
         </div>
-        
-        <div className="flex justify-between items-center mt-4">
+
+        {/* Footer links */}
+        <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid rgba(201,169,110,0.15)' }}>
           {project.liveUrl ? (
             <a
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-purple-500 dark:text-purple-400 hover:text-purple-600 dark:hover:text-purple-300 transition-colors flex items-center gap-1"
+              className="flex items-center gap-1 text-xs font-medium tracking-wide transition-colors"
+              style={{ color: 'var(--gold)', fontFamily: '"JetBrains Mono", monospace' }}
             >
-              View Project
-              <ExternalLink size={14} />
+              View Project <ExternalLink size={12} />
             </a>
           ) : (
-            <span className="text-sm font-medium text-gray-400 dark:text-gray-500">Project Demo Not Available</span>
+            <span className="text-xs text-gray-400" style={{ fontFamily: '"JetBrains Mono", monospace' }}>No demo available</span>
           )}
-          
+
           {project.githubUrl && (
             <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-gray-700 dark:text-gray-300"
-              aria-label="GitHub Repository"
+              className="p-1.5 transition-colors text-gray-500 dark:text-gray-400 hover:text-iris dark:hover:text-iris"
+              aria-label="GitHub"
             >
-              <Github size={18} />
+              <Github size={16} />
             </a>
           )}
         </div>

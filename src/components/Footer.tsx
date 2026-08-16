@@ -1,77 +1,75 @@
 import React from 'react';
-import { Github, Linkedin, Twitter, Instagram, ChevronUp } from 'lucide-react';
+import { Github, Linkedin, Twitter, ChevronUp } from 'lucide-react';
 
 const Footer: React.FC = () => {
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const socials = [
+    { label: 'GitHub', icon: <Github size={16} />, href: 'https://github.com/Jananth-Nikash-K-Y/' },
+    { label: 'LinkedIn', icon: <Linkedin size={16} />, href: 'https://in.linkedin.com/in/jananth-nikash-k-y' },
+    { label: 'Twitter', icon: <Twitter size={16} />, href: 'https://x.com/JananthNikashKY' },
+  ];
 
   return (
-    <footer className="bg-gray-100 dark:bg-gray-900 py-12 border-t border-gray-200 dark:border-gray-800">
+    <footer className="py-12 bg-linen/80 dark:bg-void" style={{ borderTop: '1px solid rgba(201,169,110,0.2)' }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-6">
+
+          {/* Back to top */}
           <button
             onClick={scrollToTop}
-            className="p-3 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors mb-8"
-            aria-label="Scroll to top"
+            aria-label="Back to top"
+            className="group flex items-center gap-2 text-xs tracking-widest uppercase text-gray-400 hover:text-gold transition-colors"
+            style={{ fontFamily: '"JetBrains Mono", monospace', color: 'rgba(201,169,110,0.6)' }}
           >
-            <ChevronUp size={24} />
+            <ChevronUp size={14} className="group-hover:-translate-y-0.5 transition-transform" />
+            Back to top
           </button>
-          
-          <a href="#home" className="flex items-center gap-2 mb-6">
+
+          {/* Gold rule */}
+          <div className="w-16 h-px" style={{ background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
+
+          {/* Logo + name */}
+          <a href="#home" className="flex flex-col items-center gap-1">
             <div className="relative w-10 h-10">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-blue-500 animate-pulse"></div>
-              <div className="absolute inset-1 rounded-full bg-white dark:bg-gray-900 flex items-center justify-center overflow-hidden">
-                <img src="/assets/logo/logoV2.png" alt="Logo" className="w-8 h-8 object-contain" />
+              <div className="absolute inset-0 rounded-sm" style={{ background: 'linear-gradient(135deg, var(--iris), var(--gold))', opacity: 0.7 }} />
+              <div className="absolute inset-[1.5px] rounded-sm bg-linen dark:bg-void flex items-center justify-center">
+                <img src="/assets/logo/logoV2.png" alt="Logo" className="w-6 h-6 object-contain" />
               </div>
             </div>
-            {/* <span className="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
-              Jananth Nikash K Y
-            </span> */}
+            <span
+              className="text-gray-600 dark:text-gray-400"
+              style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, letterSpacing: '0.2em' }}
+            >
+              JANANTH NIKASH K Y
+            </span>
           </a>
-          
-          {/* <div className="flex space-x-5 mb-8">
-            <SocialLink href="https://github.com/Jananth-Nikash-K-Y/" icon={<Github size={20} />} label="GitHub" />
-            <SocialLink href="https://in.linkedin.com/in/jananth-nikash-k-y" icon={<Linkedin size={20} />} label="LinkedIn" />
-            <SocialLink href="https://x.com/JananthNikashKY" icon={<Twitter size={20} />} label="Twitter" />
+
+          {/* Socials */}
+          <div className="flex items-center gap-6">
+            {socials.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 dark:text-gray-500 hover:text-iris dark:hover:text-iris transition-colors"
+                aria-label={s.label}
+              >
+                {s.icon}
+              </a>
+            ))}
           </div>
-          
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-8 text-sm text-gray-400">
-            <a href="#home" className="hover:text-purple-400 transition-colors">Home</a>
-            <a href="#about" className="hover:text-purple-400 transition-colors">About</a>
-            <a href="#skills" className="hover:text-purple-400 transition-colors">Skills</a>
-            <a href="#projects" className="hover:text-purple-400 transition-colors">Projects</a>
-            <a href="#experience" className="hover:text-purple-400 transition-colors">Experience</a>
-            <a href="#contact" className="hover:text-purple-400 transition-colors">Contact</a>
-          </div> */}
-          
-          <div className="text-center text-gray-400 dark:text-gray-500 text-sm">
-            <p>© {new Date().getFullYear()} Jananth Nikash. All rights reserved.</p>
-          </div>
+
+          <p
+            className="text-gray-400 dark:text-gray-600"
+            style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, letterSpacing: '0.1em' }}
+          >
+            © {new Date().getFullYear()} Jananth Nikash. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
-  );
-};
-
-const SocialLink: React.FC<{ href: string; icon: React.ReactNode; label: string }> = ({
-  href,
-  icon,
-  label,
-}) => {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="p-3 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors text-gray-400 hover:text-purple-400"
-      aria-label={label}
-    >
-      {icon}
-    </a>
   );
 };
 

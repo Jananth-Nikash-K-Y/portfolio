@@ -15,7 +15,7 @@ import AIAgentFloating from './components/AIAgentFloating';
 function App() {
   return (
     <ThemeProvider>
-      <div className="relative bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-300">
+      <div className="relative min-h-screen transition-colors duration-300 bg-parchment dark:bg-void text-gray-900 dark:text-linen">
         <CustomCursor />
         <ParticleBackground />
         <AIAgentFloating />

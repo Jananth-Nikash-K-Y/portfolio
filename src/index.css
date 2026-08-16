@@ -2,84 +2,125 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Design tokens ──────────────────────────────────────────── */
+:root {
+  --gold: #C9A96E;
+  --iris: #7B5EA7;
+  --void: #0D0D12;
+  --parchment: #F5F0E8;
+  --midnight: #1A1A2E;
+  --linen: #E8E2D9;
+}
+
+/* ─── Base ───────────────────────────────────────────────────── */
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
+  html { scroll-behavior: smooth; }
 
   body {
-    @apply transition-colors duration-300;
-    font-family: 'Quicksand', sans-serif;
+    @apply transition-colors duration-300 antialiased;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--parchment);
+    color: #1c1917;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  .dark body {
+    background: var(--void);
+    color: #e8e2d9;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Cormorant Garant', Georgia, serif;
     @apply tracking-tight;
   }
+
+  /* Gold hairline rule — the signature element */
+  .gold-rule::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    margin-top: 12px;
+  }
+
+  .gold-rule-center::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    margin: 12px auto 0;
+  }
+
+  /* Section label — monospaced eyebrow */
+  .section-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.85;
+  }
 }
 
+/* ─── Utilities ─────────────────────────────────────────────── */
 @layer utilities {
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
+  .animate-float        { animation: float 6s ease-in-out infinite; }
+  .animate-float-delayed{ animation: float 8s ease-in-out 1s infinite; }
+  .animate-float-slow   { animation: float 10s ease-in-out 2s infinite; }
+  .animate-fade-in      { animation: fadeIn 0.9s cubic-bezier(0.16,1,0.3,1) forwards; }
+  .animate-tilt         { animation: tilt 10s infinite linear; }
+  .animate-shimmer-effect{ animation: shimmerPass 0.9s linear 1; }
+
+  /* Vintage card border */
+  .card-vintage {
+    border: 1px solid rgba(201,169,110,0.2);
+    background: rgba(232,226,217,0.6);
+    backdrop-filter: blur(12px);
   }
-  
-  .animate-float-delayed {
-    animation: float 8s ease-in-out 1s infinite;
-  }
-  
-  .animate-float-slow {
-    animation: float 10s ease-in-out 2s infinite;
-  }
-  
-  .animate-fade-in {
-    animation: fadeIn 1s ease-out forwards;
-  }
-  
-  .animate-tilt {
-    animation: tilt 10s infinite linear;
+  .dark .card-vintage {
+    background: rgba(26,26,46,0.8);
+    border: 1px solid rgba(201,169,110,0.15);
   }
 
-  .perspective-1000 {
-    perspective: 1000px;
+  /* Iris glow on hover */
+  .hover-iris {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .hover-iris:hover {
+    box-shadow: 0 0 0 1px rgba(123,94,167,0.4), 0 8px 32px rgba(123,94,167,0.15);
+    transform: translateY(-2px);
   }
 
-  .animate-shimmer-effect {
-    animation: shimmer-effect 0.9s linear 1;
+  /* Skills sphere label */
+  .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    margin-top: 5px;
+    text-align: center;
+    font-weight: 400;
+    user-select: none;
+    pointer-events: none;
+    color: rgba(55,65,81,0.8);
   }
+  .dark .label { color: rgba(209,213,219,0.75); }
 }
 
+/* ─── Keyframes ─────────────────────────────────────────────── */
 @keyframes float {
-  0%   { transform: translateY(0px); }
-  50%  { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-18px); }
 }
-
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
 }
-
 @keyframes tilt {
-  0%, 100% { transform: rotate(-1deg); }
-  50%       { transform: rotate(1deg); }
+  0%,100% { transform:rotate(-1deg); }
+  50%     { transform:rotate(1deg); }
 }
-
-@keyframes shimmer-effect {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-/* Skills sphere label — adapts to dark/light theme */
-.label {
-  color: rgba(55, 65, 81, 0.9);
-  font-size: 11px;
-  margin-top: 4px;
-  text-align: center;
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 600;
-  user-select: none;
-  pointer-events: none;
-}
-
-.dark .label {
-  color: rgba(209, 213, 219, 0.85);
+@keyframes shimmerPass {
+  0%   { transform:translateX(-100%); }
+  100% { transform:translateX(100%); }
 }

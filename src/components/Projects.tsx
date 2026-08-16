@@ -44,9 +44,9 @@ const Projects: React.FC = () => {
     : projectsData.filter(project => project.category === category);
 
   return (
-    <section id="projects" className="py-20 bg-gray-100/80 dark:bg-gray-900/50">
+    <section id="projects" className="py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionTitle>Featured Projects</SectionTitle>
+        <SectionTitle eyebrow="03 — Work">Featured Projects</SectionTitle>
         
         <div className="mt-8 mb-10 w-full overflow-x-auto text-center">
           <div className="inline-flex flex-nowrap gap-3 px-4 py-2 mx-auto">
@@ -54,11 +54,14 @@ const Projects: React.FC = () => {
               <button
                 key={cat.id}
                 onClick={() => setCategory(cat.id)}
-                className={`min-w-[120px] w-32 px-2 py-2 rounded-full font-medium whitespace-nowrap transition
+                className={`px-4 py-1.5 font-medium whitespace-nowrap transition-all text-xs tracking-widest uppercase
                   ${category === cat.id
-                    ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-md'
-                    : 'bg-gray-200 dark:bg-[#23283b] text-gray-700 dark:text-gray-300'}
-                  focus:outline-none focus:ring-2 focus:ring-purple-400`}
+                    ? 'text-white'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-iris dark:hover:text-iris'}
+                  focus:outline-none`}
+                style={category === cat.id
+                  ? { background: 'var(--iris)', borderRadius: 1, fontFamily: '"JetBrains Mono", monospace' }
+                  : { borderRadius: 1, fontFamily: '"JetBrains Mono", monospace', border: '1px solid rgba(201,169,110,0.2)' }}
               >
                 {cat.name}
               </button>
