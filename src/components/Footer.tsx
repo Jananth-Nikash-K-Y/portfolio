@@ -1,5 +1,6 @@
 import React from 'react';
 import { Github, Linkedin, Twitter, ChevronUp } from 'lucide-react';
+import JKLogo from './shared/JKLogo';
 
 const Footer: React.FC = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -30,13 +31,8 @@ const Footer: React.FC = () => {
           <div className="w-16 h-px" style={{ background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
 
           {/* Logo + name */}
-          <a href="#home" className="flex flex-col items-center gap-1">
-            <div className="relative w-10 h-10">
-              <div className="absolute inset-0 rounded-sm" style={{ background: 'linear-gradient(135deg, var(--iris), var(--gold))', opacity: 0.7 }} />
-              <div className="absolute inset-[1.5px] rounded-sm bg-linen dark:bg-void flex items-center justify-center">
-                <img src="/assets/logo/logoV2.png" alt="Logo" className="w-6 h-6 object-contain" />
-              </div>
-            </div>
+          <a href="#home" className="flex flex-col items-center gap-2">
+            <JKLogo size={44} />
             <span
               className="text-gray-600 dark:text-gray-400"
               style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, letterSpacing: '0.2em' }}
