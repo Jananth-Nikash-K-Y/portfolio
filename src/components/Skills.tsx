@@ -157,10 +157,19 @@ const SkillSphere = () => {
       window.removeEventListener("resize", resize);
       container.removeChild(renderer.domElement);
     };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Update label colours when theme toggles — no sphere rebuild needed
+  useEffect(() => {
+    const labels = document.querySelectorAll<HTMLElement>('.label');
+    const isDark = document.documentElement.classList.contains('dark');
+    labels.forEach((el) => {
+      el.style.color = isDark ? 'rgba(209,213,219,0.85)' : 'rgba(55,65,81,0.9)';
+    });
   }, [theme]);
 
   return (
-    <section id="skills" className="py-10 text-white text-center">
+    <section id="skills" className="py-10 text-gray-900 dark:text-white text-center">
       <SectionTitle>Skills & Expertise</SectionTitle>
       <div
         ref={containerRef}
