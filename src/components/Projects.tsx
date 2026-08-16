@@ -44,7 +44,7 @@ const Projects: React.FC = () => {
     : projectsData.filter(project => project.category === category);
 
   return (
-    <section id="projects" className="py-24">
+    <section id="projects" className="py-24 bg-parchment dark:bg-void">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionTitle eyebrow="03 — Work">Featured Projects</SectionTitle>
         

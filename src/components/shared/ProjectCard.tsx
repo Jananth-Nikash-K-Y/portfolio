@@ -13,12 +13,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
   return (
     <div
-      className="group relative flex flex-col overflow-hidden transition-all duration-300 hover-iris"
+      className="group relative flex flex-col overflow-hidden transition-all duration-300 hover-iris bg-white/80 dark:bg-midnight/90"
       style={{
         animationDelay: delay,
-        background: hovered
-          ? 'rgba(123,94,167,0.04)'
-          : 'rgba(255,255,255,0.6)',
         border: '1px solid rgba(201,169,110,0.2)',
         borderRadius: 2,
       }}

@@ -169,7 +169,7 @@ const SkillSphere = () => {
   }, [theme]);
 
   return (
-    <section id="skills" className="py-10 text-gray-900 dark:text-white text-center">
+    <section id="skills" className="py-24 bg-linen/50 dark:bg-midnight/40 text-gray-900 dark:text-white text-center">
       <SectionTitle>Skills & Expertise</SectionTitle>
       <div
         ref={containerRef}

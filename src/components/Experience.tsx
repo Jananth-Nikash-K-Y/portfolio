@@ -39,7 +39,7 @@ const Experience: React.FC = () => {
           className="mt-12 relative opacity-0 transform translate-y-10 transition-all duration-1000"
         >
           {/* Timeline line */}
-          <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-px h-full z-0"></div>
+          <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-px h-full z-0" style={{ background: "linear-gradient(to bottom, transparent, var(--gold), transparent)", opacity: 0.35 }}></div>
           
           {/* Timeline items */}
           <div className="relative z-10">
@@ -58,9 +58,10 @@ const Experience: React.FC = () => {
             href="assets/Jananth Nikash K Y.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-2 text-sm font-medium tracking-wide transition-all hover:bg-gold/5"
+            className="inline-flex items-center gap-2 px-6 py-2 text-sm font-medium tracking-wide transition-all hover:opacity-80"
+            style={{ border: "1px solid var(--gold)", color: "var(--gold)", borderRadius: 2, fontFamily: '"JetBrains Mono", monospace', fontSize: 12, letterSpacing: "0.08em" }}
           >
-            <span>Download Full Resume</span>
+            <span>Download Resume</span>
             <span>↓</span>
           </a>
         </div>
