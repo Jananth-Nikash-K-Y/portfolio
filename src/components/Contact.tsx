@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SectionTitle from './shared/SectionTitle';
-import { Send, Mail, MapPin, Phone } from 'lucide-react';
+import { Send, Mail, MapPin } from 'lucide-react';
 import { submitContactForm } from '../api/contact';
 
 const Contact: React.FC = () => {
@@ -83,12 +83,6 @@ const Contact: React.FC = () => {
       title: 'Email',
       value: 'jananthnikash.ky@outlook.in',
       link: 'mailto:jananthnikash.ky@outlook.in'
-    },
-    { 
-      icon: <Phone size={24} className="text-blue-500" />,
-      title: 'Phone',
-      value: '+91 82203224--',
-      link: 'tel:+9182203224--'
     },
     { 
       icon: <MapPin size={24} className="text-emerald-500" />,
@@ -195,7 +189,7 @@ const Contact: React.FC = () => {
                       value={formData.subject}
                       onChange={handleChange}
                       required
-                      className="w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+                      className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
                       placeholder="Project Inquiry"
                     />
                   </div>
@@ -211,7 +205,7 @@ const Contact: React.FC = () => {
                       onChange={handleChange}
                       required
                       rows={5}
-                      className="w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+                      className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-md px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
                       placeholder="Hello, I'd like to discuss a project..."
                     ></textarea>
                   </div>
@@ -247,7 +241,7 @@ const Contact: React.FC = () => {
           
           {/* Contact info - 2 columns */}
           <div className="lg:col-span-2">
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 h-full">
+            <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 h-full border border-gray-100 dark:border-transparent shadow-sm">
               <h3 className="text-2xl font-semibold mb-6">Contact Information</h3>
               <div className="space-y-6 mb-8">
                 {contactInfo.map((info, index) => (
